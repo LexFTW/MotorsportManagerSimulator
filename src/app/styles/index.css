@@ -1,0 +1,177 @@
+@font-face {
+  font-family: "Formula1";
+  src: url("@shared/assets/fonts/Formula1-Regular_web_0.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Formula1";
+  src: url("@shared/assets/fonts/Formula1-Bold_web_0.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Formula1 Wide";
+  src: url("@shared/assets/fonts/Formula1-Wide_web_0.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+:root {
+  --font-primary: 'JetBrains Mono', 'Courier New', monospace;
+  --font-racing: "Formula1", sans-serif;
+  --font-racing-wide: "Formula1 Wide", sans-serif;
+  /* ==========
+       BACKGROUND
+       ========== */
+
+    --color-background: #0B1017;
+    --color-background-secondary: #121923;
+    --color-background-tertiary: #1A2432;
+
+    /* ==========
+       SURFACES
+       ========== */
+
+    --color-surface: #1E2938;
+    --color-surface-light: #273445;
+    --color-surface-hover: #324257;
+
+    /* ==========
+       PANELS
+       ========== */
+
+    --color-panel: rgba(18, 25, 35, 0.92);
+    --color-panel-border: rgba(255,255,255,.08);
+
+    /* ==========
+       PRIMARY
+       ========== */
+
+    --color-primary: #E10600;
+    --color-primary-hover: #FF2B25;
+    --color-primary-dark: #A60000;
+
+    /* ==========
+       SECONDARY
+       ========== */
+
+    --color-secondary: #00B8FF;
+    --color-secondary-dark: #008AC2;
+
+    /* ==========
+       SUCCESS
+       ========== */
+
+    --color-success: #30D158;
+
+    /* ==========
+       WARNING
+       ========== */
+
+    --color-warning: #FFB020;
+
+    /* ==========
+       DANGER
+       ========== */
+
+    --color-danger: #FF4D4F;
+
+    /* ==========
+       INFO
+       ========== */
+
+    --color-info: #4DA3FF;
+
+    /* ==========
+       TEXT
+       ========== */
+
+    --color-text: #FFFFFF;
+    --color-text-secondary: #B5C0CD;
+    --color-text-muted: #7E8A99;
+    --color-text-disabled: #596473;
+
+    /* ==========
+       TRACK
+       ========== */
+
+    --color-track: #D7DCE2;
+    --color-track-shadow: rgba(255,255,255,.15);
+
+    /* ==========
+       DRS
+       ========== */
+
+    --color-drs: #00D084;
+
+    /* ==========
+       SECTORS
+       ========== */
+
+    --color-sector-1: #9C27B0;
+    --color-sector-2: #43A047;
+    --color-sector-3: #FF9800;
+
+    /* ==========
+       TYRES
+       ========== */
+
+    --color-soft: #FF2D2D;
+    --color-medium: #FFD000;
+    --color-hard: #F5F5F5;
+    --color-intermediate: #00C853;
+    --color-wet: #1976D2;
+
+    /* ==========
+       WEATHER
+       ========== */
+
+    --color-sun: #FFD54F;
+    --color-cloud: #90A4AE;
+    --color-rain: #42A5F5;
+
+    /* ==========
+       STATUS
+       ========== */
+
+    --color-fastest-lap: #B400FF;
+    --color-purple-sector: #C400FF;
+    --color-green-sector: #2ECC71;
+    --color-yellow-flag: #FBC02D;
+    --color-red-flag: #D50000;
+    --color-safety-car: #FF9800;
+    --color-vsc: #00BCD4;
+
+    /* ==========
+       SHADOWS
+       ========== */
+
+    --shadow-small: 0 2px 8px rgba(0,0,0,.25);
+    --shadow-medium: 0 6px 18px rgba(0,0,0,.35);
+    --shadow-large: 0 12px 36px rgba(0,0,0,.45);
+
+    /* ==========
+       RADIUS
+       ========== */
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 18px;
+
+    /* ==========
+       TRANSITIONS
+       ========== */
+
+    --transition-fast: .15s ease;
+    --transition: .25s ease;
+    --transition-slow: .4s ease;
+}
+
+body {
+  font-family: var(--font-primary);
+  color: var(--color-text);
+  background-color: var(--color-background);
+}
