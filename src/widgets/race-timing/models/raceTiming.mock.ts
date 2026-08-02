@@ -14,7 +14,6 @@ import {
 import type { RaceTimingRow } from "../types/RaceTimingRow";
 
 export const raceTimingMock: RaceTimingRow[] = [
-  // ==== 1. McLaren (ya existente) ====
   {
     position: 1,
     number: 81,

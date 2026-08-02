@@ -17,9 +17,11 @@
     "@fortawesome/react-fontawesome": "^3.5.0",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
+    "@reduxjs/toolkit": "^2.12.0",
     "react": "^19.2.8",
     "react-country-flag": "^3.1.0",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "react-redux": "^9.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

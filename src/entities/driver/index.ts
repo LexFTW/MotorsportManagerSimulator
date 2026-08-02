@@ -1,3 +1,5 @@
+export { DRIVERS } from './drivers.data';
+
 export interface Driver {
   id: string;
   identity: DriverIdentity;

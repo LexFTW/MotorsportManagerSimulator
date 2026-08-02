@@ -1,5 +1,5 @@
 export interface Circuit {
-    id: number;
+    id: string;
     name: string;
     location: string;
     country: string;
@@ -13,22 +13,25 @@ export interface Circuit {
     sectors: TrackSector[];
 }
 
-export enum TrackType {
-    Street = 'Street',
-    Permanent = 'Permanent',
-    Hybrid = 'Hybrid',
-}
+export const TrackType = {
+    Street: 'Street',
+    Permanent: 'Permanent',
+    Hybrid: 'Hybrid',
+} as const;
+export type TrackType = typeof TrackType[keyof typeof TrackType];
 
-export enum TrackDownforceLevel {
-    Low = 'Low',
-    Medium = 'Medium',
-    High = 'High',
-}
-export enum TrackOvertakingDifficulty {
-    Easy = 'Easy',
-    Medium = 'Medium',
-    Hard = 'Hard',
-}
+export const TrackDownforceLevel = {
+    Low: 'Low',
+    Medium: 'Medium',
+    High: 'High',
+} as const;
+export type TrackDownforceLevel = typeof TrackDownforceLevel[keyof typeof TrackDownforceLevel];
+export const TrackOvertakingDifficulty = {
+    Easy: 'Easy',
+    Medium: 'Medium',
+    Hard: 'Hard',
+} as const;
+export type TrackOvertakingDifficulty = typeof TrackOvertakingDifficulty[keyof typeof TrackOvertakingDifficulty];
 
 export interface TrackPath {
     d: string;

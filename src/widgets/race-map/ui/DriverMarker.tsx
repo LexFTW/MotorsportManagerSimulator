@@ -2,7 +2,7 @@ import styles from "./RaceMap.module.css";
 
 interface Props {
     driver: {
-        id: number;
+        id: string;
         code: string;
         color: string;
         teamLogo: string;

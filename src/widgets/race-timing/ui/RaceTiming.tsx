@@ -1,11 +1,13 @@
 import { Card, CardBody, Tyres } from "@/shared/ui/components";
-import { raceTimingMock } from "../models/raceTiming.mock";
-// import { TimingRow } from "./TimingRow";
+import { useAppSelector } from "@app/store/hooks";
+import { selectTimingRows } from "@app/store/selectors/timingSelectors";
 
 import styles from "./RaceTiming.module.css";
 import { hexToRgba } from "@/shared/lib";
 
 export const RaceTiming = () => {
+    const rows = useAppSelector(selectTimingRows);
+
     return (
         <Card>
             <CardBody>
@@ -20,18 +22,18 @@ export const RaceTiming = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {raceTimingMock.map(driver => (
-                            <tr>
-                                <td className="border-0 bg-transparent" style={{ color: 'var(--color-text)'}}>{driver.position}</td>
+                        {rows.map(row => (
+                            <tr key={row.code}>
+                                <td className="border-0 bg-transparent" style={{ color: 'var(--color-text)'}}>{row.position}</td>
                                 <td className="border-0 bg-transparent" style={{ color: 'var(--color-text)'}}>
-                                    <img className={styles.imgLogo} style={{ background: hexToRgba(driver.team.color, 0.2), padding: '5px', marginRight: '5px' }} src={driver.team.logo} alt={driver.team.name} />
-                                    {driver.code}
+                                    <img className={styles.imgLogo} style={{ background: hexToRgba(row.team.color, 0.2), padding: '5px', marginRight: '5px' }} src={row.team.logo} alt={row.team.name} />
+                                    {row.code}
                                 </td>
                                 <td className="border-0 bg-transparent" style={{ color: 'var(--color-text)'}}>
-                                    <Tyres tyreType={driver.tyre} />
+                                    <Tyres tyreType={row.tyre} />
                                 </td>
-                                <td className="text-center border-0 bg-transparent" style={{ color: 'var(--color-text)'}}>{driver.pitStops}</td>
-                                <td className="border-0 bg-transparent" style={{ color: 'var(--color-text)'}}>{driver.interval}</td>
+                                <td className="text-center border-0 bg-transparent" style={{ color: 'var(--color-text)'}}>{row.pitStops}</td>
+                                <td className="border-0 bg-transparent" style={{ color: 'var(--color-text)'}}>{row.interval}</td>
                             </tr>
                         ))}
                     </tbody>

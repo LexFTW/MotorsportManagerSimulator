@@ -8,15 +8,16 @@ export interface RaceSession {
     weather: RaceWeather;
 }
 
-export enum RaceStatus {
-    PRE_RACE = 'PRE_RACE',
-    FORMATION_LAP = 'FORMATION_LAP',
-    RACING = 'RACING',
-    SAFETY_CAR = 'SAFETY_CAR',
-    VIRTUAL_SAFETY_CAR = 'VIRTUAL_SAFETY_CAR',
-    RED_FLAG = 'RED_FLAG',
-    FINISHED = 'FINISHED',
-}
+export const RaceStatus = {
+    PRE_RACE: 'PRE_RACE',
+    FORMATION_LAP: 'FORMATION_LAP',
+    RACING: 'RACING',
+    SAFETY_CAR: 'SAFETY_CAR',
+    VIRTUAL_SAFETY_CAR: 'VIRTUAL_SAFETY_CAR',
+    RED_FLAG: 'RED_FLAG',
+    FINISHED: 'FINISHED',
+} as const;
+export type RaceStatus = typeof RaceStatus[keyof typeof RaceStatus];
 
 export interface RaceWeather {
     condition: WeatherCondition;
@@ -24,13 +25,22 @@ export interface RaceWeather {
     airTemperature: number; // in Celsius
 }
 
-export enum WeatherCondition {
-    SUNNY = 'SUNNY',
-    CLOUDY = 'CLOUDY',
-    RAINY = 'RAINY',
-    STORMY = 'STORMY',
-    FOGGY = 'FOGGY',
-}
+export const WeatherCondition = {
+    SUNNY: 'SUNNY',
+    CLOUDY: 'CLOUDY',
+    RAINY: 'RAINY',
+    STORMY: 'STORMY',
+    FOGGY: 'FOGGY',
+} as const;
+export type WeatherCondition = typeof WeatherCondition[keyof typeof WeatherCondition];
+
+export const DriverStatus = {
+    RACING: 'RACING',
+    PIT: 'PIT',
+    RETIRED: 'RETIRED',
+    DNF: 'DNF',
+} as const;
+export type DriverStatus = typeof DriverStatus[keyof typeof DriverStatus];
 
 export interface RaceDriverState {
     driverId: string;
@@ -44,9 +54,10 @@ export interface RaceDriverState {
     tyre: TyreCompound;
     tyreAge: number; // in laps
     tyreWear: number; // percentage of tyre wear
-    ers: number; // in percentage
+    fuel: number; // percentage remaining
+    ers: number; // percentage remaining
     pitStops: PitStop[];
-    status: RaceStatus;
+    status: DriverStatus;
 }
 
 export interface PitStop {
@@ -63,10 +74,11 @@ export interface RaceEvent {
     description: string;
 }
 
-export enum RaceEventType {
-    OVERTAKE = 'OVERTAKE',
-    PIT_STOP = 'PIT_STOP',
-    CRASH = 'CRASH',
-    MECHANICAL_FAILURE = 'MECHANICAL_FAILURE',
-    PENALTY = 'PENALTY',
-}
+export const RaceEventType = {
+    OVERTAKE: 'OVERTAKE',
+    PIT_STOP: 'PIT_STOP',
+    CRASH: 'CRASH',
+    MECHANICAL_FAILURE: 'MECHANICAL_FAILURE',
+    PENALTY: 'PENALTY',
+} as const;
+export type RaceEventType = typeof RaceEventType[keyof typeof RaceEventType];

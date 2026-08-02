@@ -2,31 +2,35 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./RaceMap.module.css";
 import TrackBackground from "@shared/assets/images/circuits/barcelona/track.png";
 import TrackSvg from "@shared/assets/images/circuits/barcelona/track.svg?react";
-import { raceMapMock, type DriverMock } from "../models/raceMap.mock";
+import type { DriverMock } from "../models/raceMap.mock";
 import { BARCELONA_TRACK } from "../models/trackPath";
 import { DriverMarker } from "./DriverMarker";
+import { useAppSelector } from "@app/store/hooks";
+import { selectMapDrivers } from "@app/store/selectors/raceMapSelectors";
 
 type DriverState = DriverMock & { x: number; y: number };
 
 export const RaceMap = () => {
     const pathRef = useRef<SVGPathElement>(null);
     const totalLengthRef = useRef(0);
-    const [drivers, setDrivers] = useState<DriverState[]>(
-        raceMapMock.map(d => ({ ...d, x: 0, y: 0 }))
-    );
+    const mapDrivers = useAppSelector(selectMapDrivers);
+    // Ref captures store positions once at mount to seed the animation
+    const initialDriversRef = useRef(mapDrivers);
+    const [drivers, setDrivers] = useState<DriverState[]>([]);
     const [pathReady, setPathReady] = useState(false);
 
     useEffect(() => {
         if (!pathRef.current) return;
         const path = pathRef.current;
         totalLengthRef.current = path.getTotalLength();
-        setDrivers(prev => prev.map(d => {
+        setDrivers(initialDriversRef.current.map(d => {
             const pt = path.getPointAtLength(d.progress * totalLengthRef.current);
             return { ...d, x: pt.x, y: pt.y };
         }));
         setPathReady(true);
     }, []);
 
+    // Temporary animation loop — will be replaced by race engine dispatching tickDrivers
     useEffect(() => {
         if (!pathReady) return;
         const path = pathRef.current!;

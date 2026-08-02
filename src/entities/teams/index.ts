@@ -1,3 +1,5 @@
+export { TEAMS } from './teams.data';
+
 export interface Team {
     id: string;
     name: string;
