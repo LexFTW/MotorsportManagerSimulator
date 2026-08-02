@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./RaceMap.module.css";
 import TrackBackground from "@shared/assets/images/circuits/barcelona/track.png";
-import TrackSvg2 from "@shared/assets/images/circuits/barcelona/track2.svg?react";
+import TrackSvg from "@shared/assets/images/circuits/barcelona/track.svg?react";
 import { raceMapMock, type DriverMock } from "../models/raceMap.mock";
 import { BARCELONA_TRACK } from "../models/trackPath";
 import { DriverMarker } from "./DriverMarker";
@@ -46,7 +46,7 @@ export const RaceMap = () => {
             <div style={{ backgroundImage: `url(${TrackBackground})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, filter: 'blur(4px)' }} />
             <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1000, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
 
-            <TrackSvg2 className={styles.track} />
+            <TrackSvg className={styles.track} />
 
             <svg className={styles.trackOverlay} viewBox={BARCELONA_TRACK.viewBox}>
                 <path ref={pathRef} d={BARCELONA_TRACK.d} visibility="hidden" />
