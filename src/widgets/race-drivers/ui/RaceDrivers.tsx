@@ -90,7 +90,9 @@ const DriverCard = ({ driver, raceState, team, totalLaps }: DriverCardProps) => 
                     <p className={styles.firstName}>{driver.identity.firstName}</p>
                     <p className={styles.lastName}>{driver.identity.lastName}</p>
                 </div>
-                <img src={driver.identity.photo} alt={driver.identity.lastName} className={styles.photo} />
+                <div className={styles.photoWrapper}>
+                    <img src={driver.identity.photo} alt={driver.identity.lastName} className={styles.photo} />
+                </div>
                 <img src={team.logo} alt={team.name} className={styles.teamLogo} />
             </div>
 

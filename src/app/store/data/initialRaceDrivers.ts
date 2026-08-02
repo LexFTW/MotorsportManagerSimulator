@@ -13,8 +13,8 @@ const parseGap = (interval: string): number => {
 };
 
 // Approximates track position from gap to leader (Barcelona ~80s lap)
-const gapToProgress = (gap: number): number =>
-    ((0.5 - gap / 80) + 1) % 1;
+// const gapToProgress = (gap: number): number =>
+//     ((0.5 - gap / 80) + 1) % 1;
 
 export const initialRaceDrivers: RaceDriverState[] = raceTimingMock.map(row => ({
     driverId: row.code,

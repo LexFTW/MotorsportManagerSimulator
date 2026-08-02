@@ -65,15 +65,32 @@
     font-family: var(--font-racing-wide, sans-serif);
 }
 
-.photo {
+.photoWrapper {
     position: absolute;
     top: -8px;
     right: 0;
     width: 215px;
     height: 222px;
+    z-index: 2;
+}
+
+.photo {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     object-position: top center;
-    z-index: 2;
+    display: block;
+}
+
+.photoWrapper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        transparent 20%,
+        var(--color-panel) 100%
+    );
 }
 
 .teamLogo {
