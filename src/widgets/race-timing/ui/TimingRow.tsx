@@ -16,14 +16,19 @@ export const TimingRow = ({ driver }: Props) => {
     return (
         <tr key={driver.number}>
             <td>{driver.position}</td>
-            <td>{driver.code}</td>
+            <td>
+                <div>
+                    <img style={{ background: driver.team.color, padding: '5px', marginRight: '5px' }} src={driver.team.logo} alt={driver.team.name} width="20" />
+                    <span>{driver.code}</span>
+                </div>
+            </td>
             <td>
                 {driver.tyre === "Soft" ? (
-                    <img src={softTyreIcon} alt="Soft Tyre" width="20" />
+                    <img src={softTyreIcon} alt="Soft Tyre" width="32" />
                 ) : driver.tyre === "Medium" ? (
-                    <img src={mediumTyreIcon} alt="Medium Tyre" width="20" />
+                    <img src={mediumTyreIcon} alt="Medium Tyre" width="32" />
                 ) : (
-                    <img src={hardTyreIcon} alt="Hard Tyre" width="20" />
+                    <img src={hardTyreIcon} alt="Hard Tyre" width="32" />
                 )}
             </td>
             <td>{driver.pitStops}</td>

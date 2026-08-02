@@ -1,57 +1,39 @@
+// import ReactCountryFlag from "react-country-flag";
 import ReactCountryFlag from "react-country-flag";
 import styles from "./RaceHeader.module.css";
+import { Card, CardBody } from "@/shared/ui/components";
 
 export const RaceHeader = () => {
     return (
-        <header className={styles.container}>
-            <div className={styles.left}>
-                <span className={styles.flag}>
-                    <ReactCountryFlag
-                        countryCode="ES"
-                        svg
-                    />
-                </span>
+        <Card>
+            <CardBody>
+                <div className={styles.container}>
+                    <div className={styles.left}>
+                        
+                        <div style={{ display: "flex", flexDirection: "column", marginLeft: '0.5rem', verticalAlign: 'middle', justifyContent: 'center'}}>
+                            <div>
+                                <ReactCountryFlag countryCode="ES" width={60} svg/>  
+                                <span style={{marginLeft: '1rem', fontWeight: 'bold'}}>GP Spain</span>
+                            </div>
+                            <span>Circuit de Barcelona-Catalunya</span>
+                        </div>
+                    </div>
 
-                <div>
-                    <h1 className={styles.title}>GP España</h1>
+                    <div className={styles.right}>
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                            <span style={{ margin: '0.4rem', textAlign: "right"}}>Tiempo</span>
+                            <span style={{ textAlign: "right" }}>Pista</span>
+                            <span style={{ marginTop: '1rem', textAlign: "right"}}>Lluvia</span>
+                        </div>
 
-                    <span className={styles.subtitle}>
-                        Circuit de Barcelona-Catalunya
-                    </span>
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                            <span style={{ margin: '0.4rem'}}>☀️</span>
+                            <span>32ºC</span>
+                            <span style={{ marginTop: '1rem'}}>0%</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div className={styles.center}>
-                <div className={styles.info}>
-                    <span className={styles.label}>☀ Weather</span>
-                    <span className={styles.value}>28°C</span>
-                </div>
-
-                <div className={styles.info}>
-                    <span className={styles.label}>Track</span>
-                    <span className={styles.value}>36°C</span>
-                </div>
-
-                <div className={styles.info}>
-                    <span className={styles.label}>Lap</span>
-                    <span className={styles.value}>24 / 66</span>
-                </div>
-
-                <div className={styles.info}>
-                    <span className={styles.label}>Safety Car</span>
-                    <span className={styles.value}>OFF</span>
-                </div>
-            </div>
-
-            <div className={styles.right}>
-                <div className={styles.timer}>
-                    01:23.152
-                </div>
-
-                <button className={styles.speed}>
-                    ▶▶ x8
-                </button>
-            </div>
-        </header>
+            </CardBody>
+        </Card>
     );
 };

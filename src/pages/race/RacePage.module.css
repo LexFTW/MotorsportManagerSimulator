@@ -1,43 +1,20 @@
-.page {
-    display: grid;
-
-    grid-template-rows:
-        80px
-        1fr
-        220px;
-
-    height: 100vh;
+.main{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.content {
-    display: grid;
-
-    grid-template-columns:
-        100%
-        1fr
-        340px;
-
-    overflow: hidden;
+.col{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
 }
 
-.left,
-.center,
-.right {
-    overflow: hidden;
+.sm{
+    width: 35%;
 }
 
-.left {
-    padding: 16px 8px 16px 16px;
-}
-
-.center {
-    padding: 16px;
-}
-
-.right {
-    padding: 16px 16px 16px 8px;
-}
-
-.footer {
-    padding: 16px;
+.md{
+    width: 50%;
 }

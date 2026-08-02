@@ -4,7 +4,7 @@ export interface RaceTimingRow {
     code: string;
     name: string;
     country: string;
-    team: string;
+    team: TeamTiming;
     tyre: "Soft" | "Medium" | "Hard";
     laps: number;
     interval: string;
@@ -13,4 +13,10 @@ export interface RaceTimingRow {
     ers: number;
     fuel: number;
     pitStops: number;
+}
+
+export interface TeamTiming {
+    name: string;
+    color: string;
+    logo: string;
 }

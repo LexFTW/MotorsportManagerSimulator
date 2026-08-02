@@ -1,0 +1,18 @@
+.team-logo{
+    width: 30px;
+    height: 30px;
+}
+
+.driver-container{
+    height: auto;
+    overflow: hidden;
+}
+
+.driver{
+    width: 100px;
+    height: 70px;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+    background: rgba(0, 0, 0, 0.2);
+}

@@ -1,4 +1,44 @@
 .table{
     display: table;
     font-family: var(--font-racing);
+    border-collapse: collapse;
+    text-align: center;
+    table-layout: fixed;
+    width: 100%;
+}
+
+td > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+td > div > span{
+    margin-left: 5px;
+}
+
+td{
+    vertical-align: middle;
+}
+
+.imgLogo {
+    width: 24px;
+    height: 24px;
+    object-fit: fill;
+    border-radius: 50%;
+}
+
+.cardBodyTiming{
+    max-height: 700px;
+    overflow-y: auto;
+    margin-left: 0.75rem;
+}
+
+.cardBodyTiming::-webkit-scrollbar {
+    display: none;
+    overflow: -moz-scrollbars-none;
 }

@@ -20,7 +20,7 @@
 }
 
 :root {
-  --font-primary: 'JetBrains Mono', 'Courier New', monospace;
+  --font-primary: "Electrolize", sans-serif;
   --font-racing: "Formula1", sans-serif;
   --font-racing-wide: "Formula1 Wide", sans-serif;
   /* ==========
