@@ -1,6 +1,8 @@
 import type { Driver } from './index';
 import oscarPiastriPhoto from '@shared/assets/images/drivers/oscar-piastri.avif';
 import landoNorrisPhoto from '@shared/assets/images/drivers/lando-norris.avif';
+import fernandoAlonsoPhoto from '@shared/assets/images/drivers/fernando-alonso.png';
+import lanceStrollPhoto from '@shared/assets/images/drivers/lance-stroll.png';
 
 export const DRIVERS: Driver[] = [
     {
@@ -54,13 +56,13 @@ export const DRIVERS: Driver[] = [
     {
         id: 'ALO',
         team: 'aston-martin',
-        identity: { firstName: 'Fernando', lastName: 'Alonso', code: 'ALO', dorsal: 14, photo: '', country: 'ES' },
-        skills: { pace: 93, consistency: 93, tyreManagement: 94, aggressiveness: 90, wetSkills: 92, starts: 88, experience: 99 },
+        identity: { firstName: 'Fernando', lastName: 'Alonso', code: 'ALO', dorsal: 14, photo: fernandoAlonsoPhoto, country: 'ES' },
+        skills: { pace: 93, consistency: 93, tyreManagement: 94, aggressiveness: 90, wetSkills: 92, starts: 93, experience: 99 },
     },
     {
         id: 'STR',
         team: 'aston-martin',
-        identity: { firstName: 'Lance', lastName: 'Stroll', code: 'STR', dorsal: 18, photo: '', country: 'CA' },
+        identity: { firstName: 'Lance', lastName: 'Stroll', code: 'STR', dorsal: 18, photo: lanceStrollPhoto, country: 'CA' },
         skills: { pace: 82, consistency: 78, tyreManagement: 80, aggressiveness: 75, wetSkills: 76, starts: 78, experience: 76 },
     },
     {

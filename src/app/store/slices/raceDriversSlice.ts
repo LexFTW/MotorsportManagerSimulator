@@ -16,12 +16,17 @@ const raceDriversSlice = createSlice({
             const driver = state.find(d => d.driverId === driverId);
             if (driver) Object.assign(driver, updates);
         },
-        // Dispatched by the race engine each lap with the full updated standings
         tickDrivers: (_state, action: PayloadAction<RaceDriverState[]>) => {
             return action.payload;
+        },
+        batchUpdateDrivers: (state, action: PayloadAction<Array<Partial<RaceDriverState> & { driverId: string }>>) => {
+            for (const update of action.payload) {
+                const driver = state.find(d => d.driverId === update.driverId);
+                if (driver) Object.assign(driver, update);
+            }
         },
     },
 });
 
-export const { initializeDrivers, updateDriver, tickDrivers } = raceDriversSlice.actions;
+export const { initializeDrivers, updateDriver, tickDrivers, batchUpdateDrivers } = raceDriversSlice.actions;
 export const raceDriversReducer = raceDriversSlice.reducer;

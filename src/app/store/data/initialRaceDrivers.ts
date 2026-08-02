@@ -24,7 +24,7 @@ export const initialRaceDrivers: RaceDriverState[] = raceTimingMock.map(row => (
     currentLap: row.laps,
     lastLapTime: parseLapTime(row.lastLap),
     bestLapTime: parseLapTime(row.bestLap),
-    progress: gapToProgress(parseGap(row.interval)),
+    progress: 0,
     tyre: row.tyre,
     tyreAge: 10,
     tyreWear: 30,

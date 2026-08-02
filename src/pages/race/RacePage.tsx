@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { RaceLayout } from "@shared/ui/layouts/RaceLayout";
-import { RaceControl, RaceHeader, RaceMap, RaceTiming, RaceDrivers } from "@widgets";
+import { RaceControl, RaceEvents, RaceHeader, RaceMap, RaceTiming, RaceDrivers } from "@widgets";
 export const RacePage = () => {
     const [showTiming, setShowTiming] = useState(true);
     const [showDrivers, setShowDrivers] = useState(true);
@@ -12,6 +12,7 @@ export const RacePage = () => {
                     <div className="row">
                         <div className="col-4">
                             {showTiming && <RaceTiming />}
+                            {showTiming && <RaceEvents />}
                         </div>
                         <div className="col-4" style={{ position: 'relative'}}>
                             <RaceHeader />
