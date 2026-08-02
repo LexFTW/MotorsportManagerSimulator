@@ -44,7 +44,7 @@ export const RaceMap = () => {
         const id = setInterval(() => {
             setDrivers(prev => prev.map(d => {
                 const idx = Math.floor(d.progress * SPEED_SAMPLES) % SPEED_SAMPLES;
-                const newProgress = ((d.progress - BASE_STEP * speedMap[idx]) + 1) % 1;
+                const newProgress = ((d.progress - BASE_STEP * speedMap[idx] * d.speedMultiplier) + 1) % 1;
                 const pt = path.getPointAtLength(newProgress * total);
                 return { ...d, progress: newProgress, x: pt.x, y: pt.y };
             }));
@@ -67,4 +67,4 @@ export const RaceMap = () => {
             </svg>
         </>
     );
-}
+} 
