@@ -1,40 +1,24 @@
 import styles from "./RaceMap.module.css";
 
 interface Props {
-
     driver: {
         id: number;
-        x: number;
-        y: number;
-        color: string;
         code: string;
-        id: number;
-    }
-
+        color: string;
+        teamLogo: string;
+    };
+    x: number;
+    y: number;
 }
 
-export const DriverMarker = ({ driver }: Props) => {
-
+export const DriverMarker = ({ driver, x, y }: Props) => {
     return (
-        <>
-            <circle
-                cx={driver.x}
-                cy={driver.y}
-                r={8}
-                fill={driver.color}
-                className={styles.marker}
-            />
-
-            
-            <text
-                x={driver.x}
-                y={driver.y - 20}
-                className={styles.label}
-                style={{ background: driver.color }}
-            >
-                {driver.id} | {driver.code}
+        <g transform={`translate(${x}, ${y})`}>
+            <circle r={3.2} fill={driver.color} className={styles.marker} />
+            <image href={driver.teamLogo} x={-11} y={-20} width={8} height={8} />
+            <text x={-1} y={-14} className={styles.label} textAnchor="start">
+                {driver.code}
             </text>
-        </>
+        </g>
     );
-
 };

@@ -4,13 +4,18 @@ import { Card, CardBody } from '@/shared/ui/components';
 import { Icon } from '@mdi/react';
 import { mdiRacingHelmet } from '@mdi/js';
 
-export const RaceControl = () => {
+interface RaceControlProps {
+    onToggleTiming?: () => void;
+    onToggleDrivers?: () => void;
+}
+
+export const RaceControl = ({ onToggleTiming, onToggleDrivers }: RaceControlProps) => {
     return (
         <Card>
             <CardBody>
                 <div className="row justify-content-center align-items-center">
                     <div className="col d-flex justify-content-center">
-                        <button className="btn border-0 bg-transparent text-white">
+                        <button className="btn border-0 bg-transparent text-white" onClick={onToggleTiming}>
                             <FontAwesomeIcon icon={faRankingStar} />    
                         </button>
                     </div>
@@ -26,7 +31,7 @@ export const RaceControl = () => {
                         </button>
                     </div>
                     <div className="col d-flex justify-content-center">
-                        <button className="btn border-0 bg-transparent text-white">
+                        <button className="btn border-0 bg-transparent text-white" onClick={onToggleDrivers}>
                             <Icon path={mdiRacingHelmet} size={1} />
                         </button>
                     </div>

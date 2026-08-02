@@ -1,40 +1,22 @@
-export const raceMapMock = [
+import { redbullracingLogo, mclarenLogo, ferrariLogo, mercedesLogo, astonMartinLogo, haasLogo } from "@/shared/assets/images/teams";
 
-    {
-        id: 1,
-        code: "VER",
-        x: 1318,
-        y: 512,
-        color: "#1E5BC6"
-    },
+export interface DriverMock {
+    id: number;
+    teamLogo: string;
+    code: string;
+    color: string;
+    progress: number;
+}
 
-    {
-        id: 2,
-        code: "NOR",
-        x: 1418,
-        y: 572,
-        color: "#FF8700"
-    },
-
-    {
-        id: 3,
-        code: "PIA",
-        x: 1480,
-        y: 608,
-        color: "#FF8700"
-    },
-    {
-        id: 4,
-        code: "LEC",
-        x: 1132,
-        y: 400,
-        color: "#DC0000"
-    },
-    {
-        id: 5,
-        code: "RUS",
-        x: 803,
-        y: 500,
-        color: "#00D2BE"
-    }
+export const raceMapMock: DriverMock[] = [
+    { id: 1, teamLogo: redbullracingLogo ,code: "VER", color: "#1E5BC6",  progress: 0.00 },
+    { id: 2, teamLogo: mclarenLogo, code: "NOR", color: "#FF8700",  progress: 0.23 },
+    { id: 3, teamLogo: mclarenLogo, code: "PIA", color: "#FF8700",  progress: 0.25 },
+    { id: 4, teamLogo: ferrariLogo, code: "LEC", color: "#DC0000",  progress: 0.35 },
+    { id: 5, teamLogo: mercedesLogo, code: "RUS", color: "#00D2BE",  progress: 0.43 },
+    { id: 6, teamLogo: ferrariLogo, code: "HAM", color: "#DC0000",  progress: 0.50 },
+    { id: 8, teamLogo: astonMartinLogo, code: "ALO", color: "#006F62",  progress: 0.70 },
+    { id: 7, teamLogo: mercedesLogo, code: "ANT", color: "#00D2BE",  progress: 0.71 },
+    { id: 9, teamLogo: haasLogo, code: "OCO", color: "#FFFFFF",  progress: 0.72 },
+    { id: 10, teamLogo: redbullracingLogo, code: "HAD", color: "#1E5BC6", progress: 0.73 },
 ];
