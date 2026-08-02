@@ -7,12 +7,16 @@ import { BARCELONA_TRACK } from "../models/trackPath";
 import { DriverMarker } from "./DriverMarker";
 import { useAppSelector } from "@app/store/hooks";
 import { selectMapDrivers } from "@app/store/selectors/raceMapSelectors";
+import { buildSpeedMap, SPEED_SAMPLES } from "../lib/buildSpeedMap";
+
+const BASE_STEP = 0.0005;
 
 type DriverState = DriverMock & { x: number; y: number };
 
 export const RaceMap = () => {
     const pathRef = useRef<SVGPathElement>(null);
     const totalLengthRef = useRef(0);
+    const speedMapRef = useRef<Float32Array | null>(null);
     const mapDrivers = useAppSelector(selectMapDrivers);
     // Ref captures store positions once at mount to seed the animation
     const initialDriversRef = useRef(mapDrivers);
@@ -23,6 +27,7 @@ export const RaceMap = () => {
         if (!pathRef.current) return;
         const path = pathRef.current;
         totalLengthRef.current = path.getTotalLength();
+        speedMapRef.current = buildSpeedMap(path);
         setDrivers(initialDriversRef.current.map(d => {
             const pt = path.getPointAtLength(d.progress * totalLengthRef.current);
             return { ...d, x: pt.x, y: pt.y };
@@ -35,9 +40,11 @@ export const RaceMap = () => {
         if (!pathReady) return;
         const path = pathRef.current!;
         const total = totalLengthRef.current;
+        const speedMap = speedMapRef.current!;
         const id = setInterval(() => {
             setDrivers(prev => prev.map(d => {
-                const newProgress = ((d.progress - 0.0005) + 1) % 1;
+                const idx = Math.floor(d.progress * SPEED_SAMPLES) % SPEED_SAMPLES;
+                const newProgress = ((d.progress - BASE_STEP * speedMap[idx]) + 1) % 1;
                 const pt = path.getPointAtLength(newProgress * total);
                 return { ...d, progress: newProgress, x: pt.x, y: pt.y };
             }));
