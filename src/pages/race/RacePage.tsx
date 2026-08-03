@@ -7,7 +7,7 @@ export const RacePage = () => {
     const isMobile = useIsMobile();
     const [overlayVisible, setOverlayVisible] = useState(false);
     const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const [showTiming, setShowTiming] = useState(false);
+    const [showTiming, setShowTiming] = useState(true);
     const [showDrivers, setShowDrivers] = useState(false);
 
     const onScreenTap = () => {

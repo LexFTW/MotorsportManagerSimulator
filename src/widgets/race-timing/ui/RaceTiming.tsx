@@ -11,33 +11,32 @@ export const RaceTiming = () => {
     return (
         <Card>
             <CardBody>
-                <table className="table bg-transparent">
-                    <thead>
-                        <tr>
-                            <th className="bg-transparent" style={{ color: 'var(--color-text)'}}>POS</th>
-                            <th className="bg-transparent" style={{ color: 'var(--color-text)' }}>PILOTO</th>
-                            <th className="bg-transparent" style={{ color: 'var(--color-text)' }}>NEU</th>
-                            <th className="bg-transparent text-center" style={{ color: 'var(--color-text)' }}>PARADAS</th>
-                            <th className="bg-transparent" style={{ color: 'var(--color-text)' }}>DIF</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {rows.map(row => (
-                            <tr key={row.code}>
-                                <td className="border-0 bg-transparent" style={{ color: 'var(--color-text)'}}>{row.position}</td>
-                                <td className="border-0 bg-transparent" style={{ color: 'var(--color-text)'}}>
-                                    <img className={styles.imgLogo} style={{ background: hexToRgba(row.team.color, 0.2), padding: '5px', marginRight: '5px' }} src={row.team.logo} alt={row.team.name} />
-                                    {row.code}
-                                </td>
-                                <td className="border-0 bg-transparent" style={{ color: 'var(--color-text)'}}>
-                                    <Tyres tyreType={row.tyre} />
-                                </td>
-                                <td className="text-center border-0 bg-transparent" style={{ color: 'var(--color-text)'}}>{row.pitStops}</td>
-                                <td className="border-0 bg-transparent" style={{ color: 'var(--color-text)'}}>{row.interval}</td>
+                <div className="table-responsive" style={{ maxHeight: 'calc(100vh - 385px)', overflowY: 'auto' }}>
+                    <table className="table bg-transparent">
+                        <thead>
+                            <tr>
+                                <th className="bg-transparent" style={{ color: 'var(--color-text)'}}>POS</th>
+                                <th className="bg-transparent" style={{ color: 'var(--color-text)' }}>PILOTO</th>
+                                <th className="bg-transparent" style={{ color: 'var(--color-text)' }}>NEU</th>
+                                <th className="bg-transparent text-center" style={{ color: 'var(--color-text)' }}>PARADAS</th>
+                                <th className="bg-transparent" style={{ color: 'var(--color-text)' }}>DIF</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {rows.map((row, index) => (
+                                <tr key={row.code} className={styles.row}>
+                                    <td className="bg-transparent" style={{ color: 'var(--color-text)' }}>{index + 1}</td>
+                                    <td className="bg-transparent" style={{ color: 'var(--color-text)' }}>{row.code}</td>
+                                    <td className="bg-transparent" style={{ color: 'var(--color-text)' }}>
+                                        <Tyres type={row.tyre} size="small" />
+                                    </td>
+                                    <td className="bg-transparent text-center" style={{ color: 'var(--color-text)' }}>{row.pitStops}</td>
+                                    <td className="bg-transparent" style={{ color: 'var(--color-text)' }}>{row.interval}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </CardBody>
         </Card>
     );
