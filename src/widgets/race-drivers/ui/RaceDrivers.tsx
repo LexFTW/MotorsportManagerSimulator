@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGasPump, faAnglesRight } from '@fortawesome/free-solid-svg-icons';
 import styles from './RaceDriver.module.css';
 
-const TEAM_ID = 'mclaren';
+const TEAM_ID = 'cadillac';
 
 const TYRE_COLORS: Record<string, string> = {
     Soft: '#e8002d',

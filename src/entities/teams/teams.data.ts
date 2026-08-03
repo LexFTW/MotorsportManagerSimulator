@@ -10,6 +10,7 @@ import {
     williamsLogo,
     alpineLogo,
     astonMartinLogo,
+    cadillacLogo,
 } from '@shared/assets/images/teams';
 
 export const TEAMS: Team[] = [
@@ -81,7 +82,7 @@ export const TEAMS: Team[] = [
         id: 'audi',
         name: 'Audi',
         country: 'DE',
-        color: '#52E07C',
+        color: '#F50537',
         logo: audiLogo,
         stats: { pace: 78, reliability: 76, downforce: 75, topSpeed: 82, tyreUsage: 68, pitCrewSpeed: 78, ersEfficiency: 77 },
     },
@@ -93,4 +94,12 @@ export const TEAMS: Team[] = [
         logo: haasLogo,
         stats: { pace: 76, reliability: 74, downforce: 73, topSpeed: 80, tyreUsage: 66, pitCrewSpeed: 76, ersEfficiency: 74 },
     },
+    {
+        id: 'cadillac',
+        name: 'Cadillac',
+        country: 'US',
+        color: '#005BAC',
+        logo: cadillacLogo,
+        stats: { pace: 70, reliability: 78, downforce: 75, topSpeed: 79, tyreUsage: 65, pitCrewSpeed: 72, ersEfficiency: 68 },
+    }
 ];

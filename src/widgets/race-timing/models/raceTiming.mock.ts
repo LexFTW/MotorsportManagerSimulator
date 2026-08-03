@@ -9,6 +9,7 @@ import {
   williamsLogo,
   alpineLogo,
   astonMartinLogo,
+  cadillacLogo,
 } from "@/shared/assets/images/teams";
 
 import type { RaceTimingRow } from "../types/RaceTimingRow";
@@ -168,10 +169,10 @@ export const raceTimingMock: RaceTimingRow[] = [
   // ==== 8. Red Bull #2 (Sergio Pérez) ====
   {
     position: 8,
-    number: 11,
-    code: "PER",
-    name: "Sergio Pérez",
-    country: "MX",
+    number: 6,
+    code: "HAD",
+    name: "Isack Hadjar",
+    country: "FR",
     team: {
       name: "Red Bull Racing",
       color: "#1E41FF",
@@ -256,10 +257,10 @@ export const raceTimingMock: RaceTimingRow[] = [
   // ==== 12. Alpine #2 (Jack Doohan) ====
   {
     position: 12,
-    number: 61,
-    code: "DOO",
-    name: "Jack Doohan",
-    country: "AU",
+    number: 43,
+    code: "COL",
+    name: "Franco Colapinto",
+    country: "AR",
     team: {
       name: "Alpine",
       color: "#0090FF",
@@ -300,10 +301,10 @@ export const raceTimingMock: RaceTimingRow[] = [
   // ==== 14. Williams #2 (Franco Colapinto) ====
   {
     position: 14,
-    number: 43,
-    code: "COL",
-    name: "Franco Colapinto",
-    country: "AR",
+    number: 55,
+    code: "SAI",
+    name: "Carlos Sainz",
+    country: "ES",
     team: {
       name: "Williams",
       color: "#00A3E0",
@@ -322,10 +323,10 @@ export const raceTimingMock: RaceTimingRow[] = [
   // ==== 15. RB (Yuki Tsunoda) ====
   {
     position: 15,
-    number: 22,
-    code: "TSU",
-    name: "Yuki Tsunoda",
-    country: "JP",
+    number: 41,
+    code: "ARV",
+    name: "Arvid Lindblad",
+    country: "SE",
     team: {
       name: "RB",
       color: "#6692FF",
@@ -363,16 +364,16 @@ export const raceTimingMock: RaceTimingRow[] = [
     pitStops: 2,
   },
 
-  // ==== 17. Sauber (Valtteri Bottas) ====
+  // ==== 17. Audi (Nico Hülkenberg) ====
   {
     position: 17,
-    number: 77,
-    code: "BOT",
-    name: "Valtteri Bottas",
-    country: "FI",
+    number: 27,
+    code: "HUL",
+    name: "Nico Hülkenberg",
+    country: "DE",
     team: {
       name: "Audi",
-      color: "#52E07C",
+      color: "#F50537",
       logo: audiLogo,
     },
     tyre: "Hard",
@@ -385,16 +386,16 @@ export const raceTimingMock: RaceTimingRow[] = [
     pitStops: 1,
   },
 
-  // ==== 18. Sauber #2 (Zhou Guanyu) ====
+  // ==== 18. Audi #2 (Gabriel Bortoleto) ====
   {
     position: 18,
-    number: 24,
-    code: "ZHO",
-    name: "Zhou Guanyu",
-    country: "CN",
+    number: 5,
+    code: "BOR",
+    name: "Gabriel Bortoleto",
+    country: "BR",
     team: {
       name: "Audi",
-      color: "#52E07C",
+      color: "#F50537",
       logo: audiLogo,
     },
     tyre: "Hard",
@@ -448,6 +449,48 @@ export const raceTimingMock: RaceTimingRow[] = [
     bestLap: "1:24.345",
     ers: 4,
     fuel: 38,
+    pitStops: 2,
+  },
+  // ==== 21. Cadillac #1 (Valtteri Bottas) ====
+  {
+    position: 21,
+    number: 77,
+    code: "BOT",
+    name: "Valtteri Bottas",
+    country: "FI",
+    team: {
+      name: "Cadillac",
+      color: "#005BAC",
+      logo: cadillacLogo,
+    },
+    tyre: "Medium",
+    laps: 22,
+    interval: "+40.123",
+    lastLap: "1:25.567",
+    bestLap: "1:24.678",
+    ers: 5,
+    fuel: 36,
+    pitStops: 2,
+  },
+  // ==== 22. Cadillac #2 (Sergio Pérez) ====
+  {
+    position: 22,
+    number: 11,
+    code: "PER",
+    name: "Sergio Pérez",
+    country: "MX",
+    team: {
+      name: "Cadillac",
+      color: "#005BAC",
+      logo: cadillacLogo,
+    },
+    tyre: "Medium",
+    laps: 22,
+    interval: "+42.456",
+    lastLap: "1:25.890",
+    bestLap: "1:24.901",
+    ers: 3,
+    fuel: 34,
     pitStops: 2,
   },
 ];
