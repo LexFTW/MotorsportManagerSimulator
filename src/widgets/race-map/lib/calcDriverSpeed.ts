@@ -3,9 +3,9 @@ import type { DriverSkills, TeamStats } from '@entities';
 const MIN_MULTIPLIER = 0.85;
 const MAX_MULTIPLIER = 1.15;
 
-// Speed bonus on the normalised multiplier granted by each compound
+// Speed bonus on the normalised multiplier granted by each compound when tyre is fresh
 const TYRE_COMPOUND_BONUS: Record<string, number> = {
-    Soft:   0.04,
+    Soft:   0.20,
     Medium: 0.00,
     Hard:  -0.02,
     Wet:    0.00,
@@ -19,13 +19,17 @@ export const TYRE_DEGRADATION_PER_LAP: Record<string, number> = {
     Wet:    2.0,
 };
 
-// Speed penalty per percentage point of accumulated wear
-const WEAR_SPEED_PENALTY = 0.0015;
+// Base speed loss per wear point, applied regardless of compound
+const BASE_WEAR_PENALTY = 0.0005;
 
-/** Returns the net speed delta from tyre compound bonus minus wear penalty. */
+/**
+ * Compound bonus scales from full value at 0% wear to 0 at 100% wear.
+ * A small base penalty also applies to all compounds as they degrade.
+ */
 export function calcTyreSpeedDelta(tyre: string, tyreWear: number): number {
     const bonus = TYRE_COMPOUND_BONUS[tyre] ?? 0;
-    return bonus - tyreWear * WEAR_SPEED_PENALTY;
+    const wearFactor = Math.max(0, 1 - tyreWear / 100);
+    return bonus * wearFactor - tyreWear * BASE_WEAR_PENALTY;
 }
 
 /**

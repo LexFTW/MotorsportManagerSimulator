@@ -18,6 +18,8 @@ export const RaceTiming = () => {
                                 <th className="bg-transparent" style={{ color: 'var(--color-text)' }}>PILOTO</th>
                                 <th className="bg-transparent" style={{ color: 'var(--color-text)' }}>NEU</th>
                                 <th className="bg-transparent text-center" style={{ color: 'var(--color-text)' }}>PARADAS</th>
+                                <th className="bg-transparent" style={{ color: 'var(--color-text)' }}>ÚLTIMA</th>
+                                <th className="bg-transparent" style={{ color: 'var(--color-text)' }}>MEJOR</th>
                                 <th className="bg-transparent" style={{ color: 'var(--color-text)' }}>DIF</th>
                             </tr>
                         </thead>
@@ -30,6 +32,8 @@ export const RaceTiming = () => {
                                         <Tyres tyreType={row.tyre} tyreWear={row.tyreWear} />
                                     </td>
                                     <td className="bg-transparent text-center" style={{ color: 'var(--color-text)' }}>{row.pitStops}</td>
+                                    <td className="bg-transparent" style={{ color: 'var(--color-text)' }}>{row.lastLap}</td>
+                                    <td className="bg-transparent" style={{ color: 'var(--color-text)' }}>{row.bestLap}</td>
                                     <td className="bg-transparent" style={{ color: 'var(--color-text)' }}>{row.interval}</td>
                                 </tr>
                             ))}

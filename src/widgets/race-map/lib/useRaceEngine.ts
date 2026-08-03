@@ -39,6 +39,9 @@ interface EngineDriver {
     tyreAge: number;
     tyreDegradationRate: number;
     position: number;
+    lapStartTick: number;
+    lastLapTime: number;
+    bestLapTime: number;
 }
 
 export interface ScreenPosition {
@@ -98,6 +101,9 @@ export function useRaceEngine(
                     tyreAge: d.tyreAge,
                     tyreDegradationRate: d.tyreDegradationRate,
                     position: 0,
+                    lapStartTick: 0,
+                    lastLapTime: 0,
+                    bestLapTime: Infinity,
                 };
             })
             .sort((a, b) =>
@@ -117,7 +123,14 @@ export function useRaceEngine(
         const total = totalLengthRef.current!;
         const speedMap = speedMapRef.current!;
 
+        // game-seconds represented by each simulation tick for a nominal driver
+        let sumSpeedMap = 0;
+        for (let i = 0; i < speedMap.length; i++) sumSpeedMap += speedMap[i];
+        const tickToGameSecs = GAP_SCALE * BASE_STEP * (sumSpeedMap / speedMap.length);
+
+        let tick = 0;
         intervalIdRef.current = setInterval(() => {
+            tick++;
             const engine = engineRef.current;
             if (!engine) return;
 
@@ -135,6 +148,10 @@ export function useRaceEngine(
                     d.lapsCompleted += 1;
                     d.tyreAge += 1;
                     d.tyreWear = Math.min(100, d.tyreWear + d.tyreDegradationRate);
+                    const lapTime = (tick - d.lapStartTick) * tickToGameSecs;
+                    d.lastLapTime = lapTime;
+                    if (lapTime < d.bestLapTime) d.bestLapTime = lapTime;
+                    d.lapStartTick = tick;
                 }
 
                 d.progress = newProgress;
@@ -180,6 +197,10 @@ export function useRaceEngine(
                         + (d.progress - leader.progress) * GAP_SCALE,
                     tyreWear: d.tyreWear,
                     tyreAge: d.tyreAge,
+                    ...(d.bestLapTime < Infinity && {
+                        lastLapTime: d.lastLapTime,
+                        bestLapTime: d.bestLapTime,
+                    }),
                 }))
             ));
 

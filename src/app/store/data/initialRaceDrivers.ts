@@ -13,8 +13,8 @@ const parseGap = (interval: string): number => {
 };
 
 // Place leader at 0.5 (mid-circuit); each second of gap = 1/80 of a lap further back
-const LAP_TIME_SECS = 80;
-const gapToProgress = (gap: number): number => (0.5 + gap / LAP_TIME_SECS) % 1;
+const LAP_TIME_SECS = 85;
+// const gapToProgress = (gap: number): number => (0.5 + gap / LAP_TIME_SECS) % 1;
 
 export const initialRaceDrivers: RaceDriverState[] = raceTimingMock.map(row => ({
     driverId: row.code,
@@ -26,7 +26,7 @@ export const initialRaceDrivers: RaceDriverState[] = raceTimingMock.map(row => (
     sector: 1 as const,
     lastLapTime: parseLapTime(row.lastLap),
     bestLapTime: parseLapTime(row.bestLap),
-    progress: gapToProgress(parseGap(row.interval)),
+    progress: 0.83,
     tyre: row.tyre,
     tyreAge: 10,
     tyreWear: 30,
