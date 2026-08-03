@@ -33,3 +33,13 @@
 .md{
     width: 50%;
 }
+
+.overlay {
+    opacity: 1;
+    transition: opacity .25s;
+}
+
+.overlayHidden {
+    opacity: 0;
+    pointer-events: none;
+}
