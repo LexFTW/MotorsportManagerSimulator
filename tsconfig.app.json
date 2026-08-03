@@ -36,8 +36,10 @@
       "@shared": ["./src/shared"],
       "@shared/*": ["./src/shared/*"],
       "@widgets": ["./src/widgets"],
-      "@widgets/*": ["./src/widgets/*"]
+      "@widgets/*": ["./src/widgets/*"],
+      "@motorsport/race-engine": ["./packages/race-engine/src/index.ts"],
+      "@features/multiplayer":   ["./src/features/multiplayer/index.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "packages/race-engine/src/types.ts", "packages/race-engine/src/calcDriverSpeed.ts", "packages/race-engine/src/engine.ts", "packages/race-engine/src/aiStrategyManager.ts", "packages/race-engine/src/index.ts"]
 }

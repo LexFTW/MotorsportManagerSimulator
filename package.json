@@ -3,11 +3,16 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server:dev": "npm run dev --workspace=server/party",
+    "server:deploy": "npm run deploy --workspace=server/party"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.3.1",
@@ -21,7 +26,8 @@
     "react": "^19.2.8",
     "react-country-flag": "^3.1.0",
     "react-dom": "^19.2.8",
-    "react-redux": "^9.3.0"
+    "react-redux": "^9.3.0",
+    "svg-path-properties": "^2.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

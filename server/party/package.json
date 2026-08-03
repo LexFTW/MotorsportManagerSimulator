@@ -1,0 +1,17 @@
+{
+  "name": "@motorsport/party-server",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev":   "partykit dev",
+    "deploy": "partykit deploy"
+  },
+  "dependencies": {
+    "@motorsport/race-engine": "*",
+    "partykit": "^0.0.116"
+  },
+  "devDependencies": {
+    "typescript": "~6.0.2"
+  }
+}

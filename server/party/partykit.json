@@ -1,0 +1,7 @@
+{
+  "name":    "motorsport-party",
+  "main":    "src/race.ts",
+  "parties": {
+    "lobby": "src/lobby.ts"
+  }
+}
