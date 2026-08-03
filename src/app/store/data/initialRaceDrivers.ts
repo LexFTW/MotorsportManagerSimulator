@@ -13,7 +13,7 @@ const parseGap = (interval: string): number => {
 };
 
 // Place leader at 0.5 (mid-circuit); each second of gap = 1/80 of a lap further back
-const LAP_TIME_SECS = 85;
+// const LAP_TIME_SECS = 85;
 // const gapToProgress = (gap: number): number => (0.5 + gap / LAP_TIME_SECS) % 1;
 
 export const initialRaceDrivers: RaceDriverState[] = raceTimingMock.map(row => ({
