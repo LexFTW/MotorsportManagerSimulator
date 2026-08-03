@@ -1,14 +1,18 @@
 import { useRef, useState } from "react";
 import { RaceLayout } from "@shared/ui/layouts/RaceLayout";
-import { RaceControl, RaceEvents, RaceHeader, RaceMap, RaceTiming, RaceDrivers } from "@widgets";
+import { RaceControl, RaceEvents, RaceHeader, RaceMap, RaceTiming, RaceDrivers, MultiplayerController } from "@widgets";
+import { useAppSelector } from "@app/store/hooks";
 // import styles from "./RacePage.module.css";
 import { useIsMobile } from "@/shared/lib/hooks/isUseMobile";
+
 export const RacePage = () => {
     const isMobile = useIsMobile();
     const [overlayVisible, setOverlayVisible] = useState(false);
     const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [showTiming, setShowTiming] = useState(false);
     const [showDrivers, setShowDrivers] = useState(false);
+
+    const multiplayerSessionId = useAppSelector(state => state.multiplayer.sessionId);
 
     const onScreenTap = () => {
         if (!isMobile) return;
@@ -21,6 +25,9 @@ export const RacePage = () => {
 
     return (
         <RaceLayout>
+            {/* Multiplayer WebSocket connection + pit controls / strategy panel */}
+            {multiplayerSessionId && <MultiplayerController />}
+
             <div style={{ position: 'fixed', top: 0, left: 0, width: '100%' }}>
                 <div className="container-fluid my-3" style={{ position: 'relative', zIndex: 1999 }}>
                     <div className="row">
@@ -37,7 +44,6 @@ export const RacePage = () => {
                                 { showTiming && <RaceTiming /> }
                                 { showDrivers && <RaceDrivers /> }
                             </div>
-
 
                             <div style={{ marginBottom: '1.7rem' }}>
                                 <RaceControl

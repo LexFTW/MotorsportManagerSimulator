@@ -3,6 +3,7 @@ import styles from "./RaceMap.module.css";
 import { DriverMarker } from "./DriverMarker";
 import { buildSpeedMap } from "../lib/buildSpeedMap";
 import { useRaceEngine, type ScreenPosition } from "../lib/useRaceEngine";
+import { useScreenPositions } from "../lib/useScreenPositions";
 import { useAppSelector } from "@app/store/hooks";
 import { CIRCUITS } from "@entities";
 
@@ -59,7 +60,11 @@ export const RaceMap = () => {
         setScreenPositions(positions);
     }, []);
 
-    useRaceEngine(pathRef, totalLengthRef, speedMapRef, pathReady, sectorThresholds, handlePositionsUpdate);
+    const isMultiplayer = useAppSelector(state => !!state.multiplayer.sessionId);
+
+    // In multiplayer the engine runs on the server; disable it here and use server-fed Redux state instead
+    useRaceEngine(pathRef, totalLengthRef, speedMapRef, pathReady && !isMultiplayer, sectorThresholds, handlePositionsUpdate);
+    useScreenPositions(pathRef, totalLengthRef, pathReady && isMultiplayer, handlePositionsUpdate);
 
     const positionStyle = {
         top: circuitStyle.top,
