@@ -33,7 +33,7 @@ export const RacePage = () => {
                             style={{ position: 'relative', height: '100vh', display: centerVisible ? 'flex' : 'none' }}
                         >
                             <RaceHeader />
-                            <div className="d-block d-md-none">
+                            <div className="d-block d-md-none" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
                                 { showTiming && <RaceTiming /> }
                                 { showDrivers && <RaceDrivers /> }
                             </div>
