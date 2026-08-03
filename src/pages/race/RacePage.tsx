@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { RaceLayout } from "@shared/ui/layouts/RaceLayout";
 import { RaceControl, RaceEvents, RaceHeader, RaceMap, RaceTiming, RaceDrivers } from "@widgets";
-import styles from "./RacePage.module.css";
+// import styles from "./RacePage.module.css";
 import { useIsMobile } from "@/shared/lib/hooks/isUseMobile";
 export const RacePage = () => {
     const isMobile = useIsMobile();
