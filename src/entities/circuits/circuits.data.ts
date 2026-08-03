@@ -10,6 +10,10 @@ import monzaBackground from '@shared/assets/images/circuits/monza/track.jpg';
 import monzaSvgRaw from '@shared/assets/images/circuits/monza/track.svg?raw';
 import MonzaSvg from '@shared/assets/images/circuits/monza/track.svg?react';
 
+import bahrainBackground from '@shared/assets/images/circuits/bahrain/track.jpg';
+import bahrainSvgRaw from '@shared/assets/images/circuits/bahrain/track.svg?raw';
+import BahrainSvg from '@shared/assets/images/circuits/bahrain/track.svg?react';
+
 import { parseTrackSvg } from '@shared/lib';
 import { TrackType, TrackDownforceLevel, TrackOvertakingDifficulty, type Circuit } from './types.ts';
 
@@ -97,10 +101,11 @@ export const CIRCUITS: Record<string, Circuit> = {
                 height: '145%',
             },
             desktop: {
-                top: '-283px',
-                left: '55px',
-                width: '92%',
-                height: '170%',
+                top: '-354px',
+                left: '126px',
+                width: '88%',
+                height: '165%',
+                transform: 'rotate(3deg)',
             },
             landscape: {
                 top: '-60px',
@@ -149,6 +154,54 @@ export const CIRCUITS: Record<string, Circuit> = {
                 left: '60px',
                 width: '87%',
                 height: '164%',
+            },
+            landscape: {
+                top: '-100px',
+                left: '30px',
+                width: '88%',
+                height: '150%',
+            }
+        },
+    },
+    "bahrain": {
+        id: 'bahrain',
+        name: 'Bahrain International Circuit',
+        location: 'Sakhir',
+        country: 'Bahrain',
+        countryCode: 'BH',
+        trackBackground: bahrainBackground,
+        trackPath: parseTrackSvg(bahrainSvgRaw),
+        trackSvg: BahrainSvg,
+        totalLaps: 57,
+        lapDistanceKm: 5.412,
+        type: TrackType.Permanent,
+        downforceLevel: TrackDownforceLevel.Medium,
+        tyreDegradation: 0.75,
+        overtakingDifficulty: TrackOvertakingDifficulty.Medium,
+        startFinishProgress: 1.5,
+        sectors: [
+            { id: 1, name: 'Sector 1', distanceKm: 1.48 },
+            { id: 2, name: 'Sector 2', distanceKm: 1.78 },
+            { id: 3, name: 'Sector 3', distanceKm: 1.36 },
+        ],
+        styles: {
+            mobile: {
+                top: 'calc(50vh - 28.13vw)',
+                left: '0px',
+                width: '100%',
+                height: '56.27vw',
+            },
+            tablet: {
+                top: '-180px',
+                left: '20px',
+                width: '96%',
+                height: '145%',
+            },
+            desktop: {
+                top: '-299px',
+                left: '148px',
+                width: '83%',
+                height: '156%',
             },
             landscape: {
                 top: '-100px',

@@ -66,6 +66,7 @@ export const RaceMap = () => {
         left: circuitStyle.left,
         width: circuitStyle.width,
         height: circuitStyle.height,
+        transform: circuitStyle.transform,
     };
 
     return (
@@ -75,7 +76,9 @@ export const RaceMap = () => {
             <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1000, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
 
             {circuit.trackPath && (
-                <TrackSvg className={styles.track} style={positionStyle} />
+                <TrackSvg 
+                    className={styles.track} 
+                    style={positionStyle} />
             )}
 
             <svg className={styles.trackOverlay} style={positionStyle} viewBox={circuit.trackPath.viewBox}>

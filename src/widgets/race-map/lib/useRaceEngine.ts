@@ -41,6 +41,7 @@ export interface ScreenPosition {
     code: string;
     color: string;
     teamLogo: string;
+    position: number;
     x: number;
     y: number;
 }
@@ -176,6 +177,7 @@ export function useRaceEngine(
                     code: driver?.code ?? d.id,
                     color: driver?.color ?? '#FFFFFF',
                     teamLogo: driver?.teamLogo ?? '',
+                    position: d.position,
                     x: pt.x,
                     y: pt.y,
                 };

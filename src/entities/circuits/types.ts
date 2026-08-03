@@ -57,6 +57,7 @@ export interface CircuitDeviceStyles {
     left: string;
     width: string;
     height: string;
+    transform?: string;
 }
 
 export interface CircuitStyles {

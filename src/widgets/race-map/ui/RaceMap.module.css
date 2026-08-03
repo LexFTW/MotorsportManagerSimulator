@@ -45,3 +45,10 @@
     font-size: 6px;
     font-weight: bold;
 }
+
+.markerPosition {
+    fill: white;
+    font-size: 3px;
+    font-weight: bold;
+    pointer-events: none;
+}
