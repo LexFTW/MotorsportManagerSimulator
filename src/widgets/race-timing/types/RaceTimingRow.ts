@@ -13,6 +13,7 @@ export interface RaceTimingRow {
     ers: number;
     fuel: number;
     pitStops: number;
+    tyreWear: number;
 }
 
 export interface TeamTiming {

@@ -6,6 +6,7 @@ import { addEvents } from '@app/store/slices/raceEventsSlice';
 import { advanceLap, setStatus } from '@app/store/slices/raceSessionSlice';
 import { RaceEventType, RaceStatus } from '@entities';
 import { SPEED_SAMPLES } from './buildSpeedMap';
+import { calcTyreSpeedDelta } from './calcDriverSpeed';
 
 const BASE_STEP = 0.0005;
 const GAP_SCALE = 80; // one lap ≈ 80 simulated seconds at Barcelona
@@ -33,6 +34,10 @@ interface EngineDriver {
     lapsCompleted: number;
     sector: 1 | 2 | 3;
     speedMultiplier: number;
+    tyre: string;
+    tyreWear: number;
+    tyreAge: number;
+    tyreDegradationRate: number;
     position: number;
 }
 
@@ -88,6 +93,10 @@ export function useRaceEngine(
                     lapsCompleted: d.lapsCompleted,
                     sector,
                     speedMultiplier: d.speedMultiplier,
+                    tyre: d.tyre,
+                    tyreWear: d.tyreWear,
+                    tyreAge: d.tyreAge,
+                    tyreDegradationRate: d.tyreDegradationRate,
                     position: 0,
                 };
             })
@@ -117,12 +126,15 @@ export function useRaceEngine(
 
             for (const d of engine) {
                 const idx = Math.floor(d.progress * SPEED_SAMPLES) % SPEED_SAMPLES;
-                const step = BASE_STEP * speedMap[idx] * d.speedMultiplier;
+                const effectiveMultiplier = d.speedMultiplier + calcTyreSpeedDelta(d.tyre, d.tyreWear);
+                const step = BASE_STEP * speedMap[idx] * Math.max(0.5, effectiveMultiplier);
                 const newProgress = ((d.progress - step) + 1) % 1;
 
                 // S/F crossing: progress wraps from near-0 back to near-1
                 if (newProgress > d.progress + 0.5) {
                     d.lapsCompleted += 1;
+                    d.tyreAge += 1;
+                    d.tyreWear = Math.min(100, d.tyreWear + d.tyreDegradationRate);
                 }
 
                 d.progress = newProgress;
@@ -166,6 +178,8 @@ export function useRaceEngine(
                     sector: d.sector,
                     gap: (leader.lapsCompleted - d.lapsCompleted) * GAP_SCALE
                         + (d.progress - leader.progress) * GAP_SCALE,
+                    tyreWear: d.tyreWear,
+                    tyreAge: d.tyreAge,
                 }))
             ));
 

@@ -3,7 +3,6 @@ import { useAppSelector } from "@app/store/hooks";
 import { selectTimingRows } from "@app/store/selectors/timingSelectors";
 
 import styles from "./RaceTiming.module.css";
-// import { hexToRgba } from "@/shared/lib";
 
 export const RaceTiming = () => {
     const rows = useAppSelector(selectTimingRows);
@@ -28,7 +27,7 @@ export const RaceTiming = () => {
                                     <td className="bg-transparent" style={{ color: 'var(--color-text)' }}>{index + 1}</td>
                                     <td className="bg-transparent" style={{ color: 'var(--color-text)' }}>{row.code}</td>
                                     <td className="bg-transparent" style={{ color: 'var(--color-text)' }}>
-                                        <Tyres tyreType={row.tyre} />
+                                        <Tyres tyreType={row.tyre} tyreWear={row.tyreWear} />
                                     </td>
                                     <td className="bg-transparent text-center" style={{ color: 'var(--color-text)' }}>{row.pitStops}</td>
                                     <td className="bg-transparent" style={{ color: 'var(--color-text)' }}>{row.interval}</td>

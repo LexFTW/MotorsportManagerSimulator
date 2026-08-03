@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { DRIVERS, TEAMS } from '@entities';
 import type { DriverMock } from '@widgets/race-map/models/raceMap.mock';
-import { calcSpeedMultipliers } from '@widgets/race-map/lib/calcDriverSpeed';
+import { calcSpeedMultipliers, calcEffectiveDegradationRate } from '@widgets/race-map/lib/calcDriverSpeed';
 import type { RootState } from '../index';
 
 export const selectMapDrivers = createSelector(
@@ -22,14 +22,24 @@ export const selectMapDrivers = createSelector(
             }))
         );
 
-        return sorted.map((d, i) => ({
-            id: d.driverId,
-            code: entries[i].driver?.identity.code ?? d.driverId,
-            teamLogo: entries[i].team?.logo ?? '',
-            color: entries[i].team?.color ?? '#FFFFFF',
-            progress: d.progress,
-            lapsCompleted: d.lapsCompleted,
-            speedMultiplier: multipliers[i],
-        }));
+        return sorted.map((d, i) => {
+            const driver = entries[i].driver;
+            const team   = entries[i].team;
+            const tyreManagement = driver?.skills.tyreManagement ?? 80;
+            const tyreUsage      = team?.stats.tyreUsage ?? 80;
+            return {
+                id: d.driverId,
+                code: driver?.identity.code ?? d.driverId,
+                teamLogo: team?.logo ?? '',
+                color: team?.color ?? '#FFFFFF',
+                progress: d.progress,
+                lapsCompleted: d.lapsCompleted,
+                speedMultiplier: multipliers[i],
+                tyre: d.tyre,
+                tyreWear: d.tyreWear,
+                tyreAge: d.tyreAge,
+                tyreDegradationRate: calcEffectiveDegradationRate(d.tyre, tyreManagement, tyreUsage),
+            };
+        });
     }
 );

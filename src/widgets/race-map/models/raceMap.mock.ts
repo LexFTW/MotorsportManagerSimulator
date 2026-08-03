@@ -8,6 +8,10 @@ export interface DriverMock {
     progress: number;
     lapsCompleted: number;
     speedMultiplier: number;
+    tyre: string;
+    tyreWear: number;
+    tyreAge: number;
+    tyreDegradationRate: number;
 }
 
 export const raceMapMock: DriverMock[] = [

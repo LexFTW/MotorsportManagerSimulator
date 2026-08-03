@@ -36,6 +36,7 @@ export const selectTimingRows = createSelector(
                     ers: d.ers,
                     fuel: d.fuel,
                     pitStops: d.pitStops.length,
+                    tyreWear: d.tyreWear,
                 };
             })
 );
