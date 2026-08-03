@@ -1,12 +1,13 @@
 import { useEffect, useRef, type RefObject } from 'react';
 import { useAppDispatch, useAppSelector } from '@app/store/hooks';
 import { selectMapDrivers } from '@app/store/selectors/raceMapSelectors';
-import { batchUpdateDrivers } from '@app/store/slices/raceDriversSlice';
+import { batchUpdateDrivers, updateDriver, recordPitStop } from '@app/store/slices/raceDriversSlice';
 import { addEvents } from '@app/store/slices/raceEventsSlice';
 import { advanceLap, setStatus } from '@app/store/slices/raceSessionSlice';
-import { RaceEventType, RaceStatus } from '@entities';
+import { CIRCUITS, DriverStatus, RaceEventType, RaceStatus, type TyreCompound } from '@entities';
 import { SPEED_SAMPLES } from './buildSpeedMap';
-import { calcTyreSpeedDelta } from './calcDriverSpeed';
+import { calcEffectiveDegradationRate, calcTyreSpeedDelta } from './calcDriverSpeed';
+import { planPitStrategy, shouldPitNow, type DriverStrategyPlan } from './pitStrategy';
 
 const BASE_STEP = 0.0005;
 const GAP_SCALE = 80; // one lap ≈ 80 simulated seconds at Barcelona
@@ -38,10 +39,25 @@ interface EngineDriver {
     tyreWear: number;
     tyreAge: number;
     tyreDegradationRate: number;
+    tyreManagement: number;
+    tyreUsage: number;
     position: number;
     lapStartTick: number;
     lastLapTime: number;
     bestLapTime: number;
+    // pit stop state
+    pitStopTicksRemaining: number;
+    pendingCompound: TyreCompound | null;
+    pitStopsDone: number;
+    pitCrewSpeed: number;
+    pitLaneTimeSecs: number;
+    pitLaneX: number;
+    pitLaneY: number;
+    strategyPlan: DriverStrategyPlan;
+    pitEntryLap: number;
+    pitEntryTyreAge: number;
+    pitDurationSecs: number;
+    isFinished: boolean;
 }
 
 export interface ScreenPosition {
@@ -52,6 +68,14 @@ export interface ScreenPosition {
     position: number;
     x: number;
     y: number;
+    isPitting: boolean;
+    isFinished: boolean;
+}
+
+function calcPitDurationSecs(pitLaneTimeSecs: number, pitCrewSpeed: number): number {
+    // crewSecs: pitCrewSpeed 100 → 2.0s, 70 → 4.0s
+    const crewSecs = 2.0 + (100 - pitCrewSpeed) * 0.067;
+    return pitLaneTimeSecs + crewSecs;
 }
 
 export function useRaceEngine(
@@ -69,6 +93,9 @@ export function useRaceEngine(
     const totalLaps = useAppSelector(state => state.session.totalLaps);
     const totalLapsRef = useRef(totalLaps);
 
+    const circuitId = useAppSelector(state => state.session.circuitId);
+    const circuitIdRef = useRef(circuitId);
+
     const thresholdsRef = useRef(sectorThresholds);
 
     const engineRef = useRef<EngineDriver[] | null>(null);
@@ -80,16 +107,40 @@ export function useRaceEngine(
         mapDriversRef.current = mapDrivers;
         totalLapsRef.current = totalLaps;
         thresholdsRef.current = sectorThresholds;
+        circuitIdRef.current = circuitId;
     });
 
     useEffect(() => {
         if (!pathReady) return;
 
-        const initial = mapDriversRef.current;
-        const thresholds = thresholdsRef.current;
+        const initial     = mapDriversRef.current;
+        const thresholds  = thresholdsRef.current;
+        const circuit     = CIRCUITS[circuitIdRef.current];
+        const path        = pathRef.current!;
+        const total       = totalLengthRef.current!;
+        const totalLapsVal = totalLapsRef.current;
+
+        // Derive pit lane position: perpendicular offset from the S/F point (progress=0)
+        const ptA     = path.getPointAtLength(0);
+        const ptB     = path.getPointAtLength(total * 0.01);
+        const dx      = ptB.x - ptA.x;
+        const dy      = ptB.y - ptA.y;
+        const len     = Math.hypot(dx, dy) || 1;
+        const perpX   = -dy / len;
+        const perpY   =  dx / len;
+        const pitBaseX = ptA.x + perpX * 14;
+        const pitBaseY = ptA.y + perpY * 14;
+
         engineRef.current = initial
             .map(d => {
-                const sector = getSector(d.progress, thresholds);
+                const sector      = getSector(d.progress, thresholds);
+                const strategyPlan = planPitStrategy({
+                    totalLaps: totalLapsVal,
+                    circuitDegradation: circuit.tyreDegradation,
+                    effectiveDegRate: d.tyreDegradationRate,
+                    startCompound: d.tyre as TyreCompound,
+                    jitterSeed: Math.random(),
+                });
                 return {
                     id: d.id,
                     progress: d.progress,
@@ -100,10 +151,24 @@ export function useRaceEngine(
                     tyreWear: d.tyreWear,
                     tyreAge: d.tyreAge,
                     tyreDegradationRate: d.tyreDegradationRate,
+                    tyreManagement: d.tyreManagement,
+                    tyreUsage: d.tyreUsage,
                     position: 0,
                     lapStartTick: 0,
                     lastLapTime: 0,
                     bestLapTime: Infinity,
+                    pitStopTicksRemaining: 0,
+                    pendingCompound: null,
+                    pitStopsDone: 0,
+                    pitCrewSpeed: d.pitCrewSpeed,
+                    pitLaneTimeSecs: circuit.pitLaneTimeSecs,
+                    pitLaneX: pitBaseX,
+                    pitLaneY: pitBaseY,
+                    strategyPlan,
+                    pitEntryLap: 0,
+                    pitEntryTyreAge: 0,
+                    pitDurationSecs: 0,
+                    isFinished: false,
                 };
             })
             .sort((a, b) =>
@@ -134,10 +199,37 @@ export function useRaceEngine(
             const engine = engineRef.current;
             if (!engine) return;
 
-            const thresholds = thresholdsRef.current;
+            const thresholds   = thresholdsRef.current;
+            const totalLapsVal = totalLapsRef.current;
             const prevPositions = new Map(engine.map(d => [d.id, d.position]));
 
+            const pitEntryEvents: Array<{ driverId: string; lap: number; compound: TyreCompound }> = [];
+            const pitExitEvents:  Array<{ driverId: string; lap: number; tyre: TyreCompound; tyreLapsIn: number; durationSecs: number }> = [];
+
             for (const d of engine) {
+                // Driver is in the pit box: count down ticks
+                if (d.pitStopTicksRemaining > 0) {
+                    d.pitStopTicksRemaining--;
+                    if (d.pitStopTicksRemaining === 0 && d.pendingCompound) {
+                        const newCompound = d.pendingCompound;
+                        d.tyre       = newCompound;
+                        d.tyreWear   = 0;
+                        d.tyreAge    = 0;
+                        d.tyreDegradationRate = calcEffectiveDegradationRate(
+                            newCompound, d.tyreManagement, d.tyreUsage
+                        );
+                        pitExitEvents.push({
+                            driverId:    d.id,
+                            lap:         d.lapsCompleted,
+                            tyre:        newCompound,
+                            tyreLapsIn:  d.pitEntryTyreAge,
+                            durationSecs: d.pitDurationSecs,
+                        });
+                        d.pendingCompound = null;
+                    }
+                    continue; // marker stays at pit lane position
+                }
+
                 const idx = Math.floor(d.progress * SPEED_SAMPLES) % SPEED_SAMPLES;
                 const effectiveMultiplier = d.speedMultiplier + calcTyreSpeedDelta(d.tyre, d.tyreWear);
                 const step = BASE_STEP * speedMap[idx] * Math.max(0.5, effectiveMultiplier);
@@ -146,16 +238,33 @@ export function useRaceEngine(
                 // S/F crossing: progress wraps from near-0 back to near-1
                 if (newProgress > d.progress + 0.5) {
                     d.lapsCompleted += 1;
-                    d.tyreAge += 1;
+                    d.tyreAge       += 1;
                     d.tyreWear = Math.min(100, d.tyreWear + d.tyreDegradationRate);
                     const lapTime = (tick - d.lapStartTick) * tickToGameSecs;
                     d.lastLapTime = lapTime;
                     if (lapTime < d.bestLapTime) d.bestLapTime = lapTime;
                     d.lapStartTick = tick;
+
+                    // Evaluate pit strategy on every lap completion
+                    const decision = shouldPitNow(
+                        { lapsCompleted: d.lapsCompleted, tyreWear: d.tyreWear, pitStopsDone: d.pitStopsDone },
+                        d.strategyPlan,
+                        totalLapsVal,
+                    );
+                    if (decision.pit) {
+                        const durSecs  = calcPitDurationSecs(d.pitLaneTimeSecs, d.pitCrewSpeed);
+                        d.pitStopTicksRemaining = Math.ceil(durSecs / tickToGameSecs);
+                        d.pendingCompound  = decision.compound;
+                        d.pitEntryLap      = d.lapsCompleted;
+                        d.pitEntryTyreAge  = d.tyreAge;
+                        d.pitDurationSecs  = durSecs;
+                        d.pitStopsDone++;
+                        pitEntryEvents.push({ driverId: d.id, lap: d.lapsCompleted, compound: decision.compound });
+                    }
                 }
 
                 d.progress = newProgress;
-                d.sector = getSector(newProgress, thresholds);
+                d.sector   = getSector(newProgress, thresholds);
             }
 
             const ranked = [...engine].sort((a, b) =>
@@ -166,24 +275,70 @@ export function useRaceEngine(
 
             const leader = ranked[0];
 
-            const overtakeEvents = [];
+            // Mark drivers as finished when they cross the line for their last lap
+            const justFinished: string[] = [];
+            for (const d of engine) {
+                if (!d.isFinished && d.lapsCompleted >= totalLapsVal) {
+                    d.isFinished = true;
+                    justFinished.push(d.id);
+                }
+            }
+            // When the leader finishes, classify all remaining drivers immediately
+            const raceOver = leader.lapsCompleted >= totalLapsVal;
+            if (raceOver) {
+                for (const d of engine) {
+                    if (!d.isFinished) {
+                        d.isFinished = true;
+                        justFinished.push(d.id);
+                    }
+                }
+            }
+
+            const allEvents = [];
+
             for (const d of engine) {
                 const prev = prevPositions.get(d.id)!;
-                if (d.position < prev) {
+                if (d.position < prev && d.pitStopTicksRemaining === 0) {
                     const overtakee = engine.find(
                         o => o.id !== d.id && prevPositions.get(o.id) === d.position
                     );
-                    overtakeEvents.push({
-                        lap: leader.lapsCompleted,
-                        type: RaceEventType.OVERTAKE,
-                        driverId: d.id,
+                    allEvents.push({
+                        lap:         leader.lapsCompleted,
+                        type:        RaceEventType.OVERTAKE,
+                        driverId:    d.id,
                         description: `${d.id} adelantó a ${overtakee?.id ?? '?'}`,
                     });
                 }
             }
 
-            if (overtakeEvents.length > 0) {
-                dispatch(addEvents(overtakeEvents));
+            for (const pe of pitEntryEvents) {
+                allEvents.push({
+                    lap:         pe.lap,
+                    type:        RaceEventType.PIT_STOP,
+                    driverId:    pe.driverId,
+                    description: `${pe.driverId} entra a boxes → ${pe.compound}`,
+                });
+                dispatch(updateDriver({ driverId: pe.driverId, status: DriverStatus.PIT }));
+            }
+
+            for (const px of pitExitEvents) {
+                allEvents.push({
+                    lap:         px.lap,
+                    type:        RaceEventType.PIT_EXIT,
+                    driverId:    px.driverId,
+                    description: `${px.driverId} sale de boxes con ${px.tyre}`,
+                });
+                dispatch(updateDriver({ driverId: px.driverId, status: DriverStatus.RACING, tyre: px.tyre, tyreWear: 0, tyreAge: 0 }));
+                dispatch(recordPitStop({
+                    driverId: px.driverId,
+                    stop: { lap: px.lap, duration: px.durationSecs, newTyre: px.tyre, tyreLapsIn: px.tyreLapsIn },
+                }));
+            }
+
+            if (allEvents.length > 0) dispatch(addEvents(allEvents));
+
+            for (const driverId of justFinished) {
+                dispatch(updateDriver({ driverId, status: DriverStatus.FINISHED }));
             }
 
             dispatch(batchUpdateDrivers(
@@ -204,8 +359,26 @@ export function useRaceEngine(
                 }))
             ));
 
+            // Pitting and finished drivers are shown off-track with index-based spacing
+            let pitIndex = 0;
+            let finishedIndex = 0;
             const screenPositions: ScreenPosition[] = engine.map(d => {
-                const pt = path.getPointAtLength(d.progress * total);
+                const isFinished = d.isFinished;
+                const isPitting  = d.pitStopTicksRemaining > 0 && !isFinished;
+                let x: number, y: number;
+                if (isFinished) {
+                    x = d.pitLaneX + finishedIndex * 5;
+                    y = d.pitLaneY + 12;
+                    finishedIndex++;
+                } else if (isPitting) {
+                    x = d.pitLaneX + pitIndex * 5;
+                    y = d.pitLaneY;
+                    pitIndex++;
+                } else {
+                    const pt = path.getPointAtLength(d.progress * total);
+                    x = pt.x;
+                    y = pt.y;
+                }
                 const driver = mapDriversRef.current.find(md => md.id === d.id);
                 return {
                     id: d.id,
@@ -213,8 +386,10 @@ export function useRaceEngine(
                     color: driver?.color ?? '#FFFFFF',
                     teamLogo: driver?.teamLogo ?? '',
                     position: d.position,
-                    x: pt.x,
-                    y: pt.y,
+                    x,
+                    y,
+                    isPitting,
+                    isFinished,
                 };
             });
 
@@ -226,9 +401,8 @@ export function useRaceEngine(
                 dispatch(advanceLap());
             }
 
-            // Race over when the last driver completes all laps
-            const lastDriver = ranked[ranked.length - 1];
-            if (lastDriver.lapsCompleted >= totalLapsRef.current) {
+            // Race ends when the leader completes all laps
+            if (raceOver) {
                 dispatch(setStatus(RaceStatus.FINISHED));
                 if (intervalIdRef.current) clearInterval(intervalIdRef.current);
             }

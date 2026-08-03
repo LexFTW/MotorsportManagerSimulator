@@ -39,6 +39,9 @@ export const selectMapDrivers = createSelector(
                 tyreWear: d.tyreWear,
                 tyreAge: d.tyreAge,
                 tyreDegradationRate: calcEffectiveDegradationRate(d.tyre, tyreManagement, tyreUsage),
+                pitCrewSpeed: team?.stats.pitCrewSpeed ?? 80,
+                tyreManagement,
+                tyreUsage,
             };
         });
     }

@@ -2,11 +2,12 @@ import { useAppSelector } from '@app/store/hooks';
 import { RaceEventType } from '@entities';
 
 const EVENT_LABELS: Record<string, string> = {
-    [RaceEventType.OVERTAKE]: '⚔️ Adelantamiento',
-    [RaceEventType.PIT_STOP]: '🔧 Pit stop',
-    [RaceEventType.CRASH]: '💥 Accidente',
-    [RaceEventType.MECHANICAL_FAILURE]: '⚙️ Fallo mecánico',
-    [RaceEventType.PENALTY]: '🟥 Penalización',
+    [RaceEventType.OVERTAKE]:            '⚔️ Adelantamiento',
+    [RaceEventType.PIT_STOP]:            '🔧 Pit stop',
+    [RaceEventType.PIT_EXIT]:            '🟢 Sale de boxes',
+    [RaceEventType.CRASH]:               '💥 Accidente',
+    [RaceEventType.MECHANICAL_FAILURE]:  '⚙️ Fallo mecánico',
+    [RaceEventType.PENALTY]:             '🟥 Penalización',
 };
 
 const MAX_VISIBLE = 6;

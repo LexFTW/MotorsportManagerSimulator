@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { RaceDriverState } from '@entities';
+import type { RaceDriverState, PitStop } from '@entities';
 import { initialRaceDrivers } from '../data/initialRaceDrivers';
 
 const initialState: RaceDriverState[] = initialRaceDrivers;
@@ -25,8 +25,12 @@ const raceDriversSlice = createSlice({
                 if (driver) Object.assign(driver, update);
             }
         },
+        recordPitStop: (state, action: PayloadAction<{ driverId: string; stop: PitStop }>) => {
+            const driver = state.find(d => d.driverId === action.payload.driverId);
+            if (driver) driver.pitStops.push(action.payload.stop);
+        },
     },
 });
 
-export const { initializeDrivers, updateDriver, tickDrivers, batchUpdateDrivers } = raceDriversSlice.actions;
+export const { initializeDrivers, updateDriver, tickDrivers, batchUpdateDrivers, recordPitStop } = raceDriversSlice.actions;
 export const raceDriversReducer = raceDriversSlice.reducer;

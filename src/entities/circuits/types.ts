@@ -14,6 +14,7 @@ export interface Circuit {
     type: TrackType;
     downforceLevel: TrackDownforceLevel;
     tyreDegradation: number;
+    pitLaneTimeSecs: number;
     overtakingDifficulty: TrackOvertakingDifficulty;
     sectors: TrackSector[];
     startFinishProgress: number;

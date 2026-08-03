@@ -11,12 +11,19 @@ const formatLapTime = (seconds: number): string => {
 
 export const selectTimingRows = createSelector(
     (state: RootState) => state.drivers,
-    (drivers): RaceTimingRow[] =>
-        [...drivers]
-            .sort((a, b) => a.position - b.position)
-            .map(d => {
+    (drivers): RaceTimingRow[] => {
+        const sorted = [...drivers].sort((a, b) => a.position - b.position);
+        const leaderLaps = sorted[0]?.lapsCompleted ?? 0;
+
+        return sorted.map(d => {
                 const driver = DRIVERS.find(dr => dr.id === d.driverId);
                 const team = TEAMS.find(t => t.id === driver?.team);
+                const lapsBehind = leaderLaps - d.lapsCompleted;
+                const interval = d.position === 1
+                    ? 'Leader'
+                    : lapsBehind >= 1
+                        ? lapsBehind === 1 ? '+1 LAP' : `+${lapsBehind} LAPS`
+                        : `+${d.gap.toFixed(3)}`;
                 return {
                     position: d.position,
                     number: driver?.identity.dorsal ?? 0,
@@ -30,7 +37,7 @@ export const selectTimingRows = createSelector(
                     },
                     tyre: d.tyre as RaceTimingRow['tyre'],
                     laps: d.currentLap,
-                    interval: d.position === 1 ? 'Leader' : `+${d.gap.toFixed(3)}`,
+                    interval,
                     lastLap: formatLapTime(d.lastLapTime),
                     bestLap: formatLapTime(d.bestLapTime),
                     ers: d.ers,
@@ -38,5 +45,6 @@ export const selectTimingRows = createSelector(
                     pitStops: d.pitStops.length,
                     tyreWear: d.tyreWear,
                 };
-            })
+            });
+    }
 );

@@ -32,6 +32,7 @@ export const CIRCUITS: Record<string, Circuit> = {
         type: TrackType.Permanent,
         downforceLevel: TrackDownforceLevel.Medium,
         tyreDegradation: 0.72,
+        pitLaneTimeSecs: 20,
         overtakingDifficulty: TrackOvertakingDifficulty.Hard,
         startFinishProgress: 1.7,
         sectors: [
@@ -80,6 +81,7 @@ export const CIRCUITS: Record<string, Circuit> = {
         type: TrackType.Permanent,
         downforceLevel: TrackDownforceLevel.High,
         tyreDegradation: 0.85,
+        pitLaneTimeSecs: 21,
         overtakingDifficulty: TrackOvertakingDifficulty.Hard,
         startFinishProgress: 2.1,
         sectors: [
@@ -129,6 +131,7 @@ export const CIRCUITS: Record<string, Circuit> = {
         type: TrackType.Permanent,
         downforceLevel: TrackDownforceLevel.Low,
         tyreDegradation: 0.65,
+        pitLaneTimeSecs: 19,
         overtakingDifficulty: TrackOvertakingDifficulty.Medium,
         startFinishProgress: 1.5,
         sectors: [
@@ -177,6 +180,7 @@ export const CIRCUITS: Record<string, Circuit> = {
         type: TrackType.Permanent,
         downforceLevel: TrackDownforceLevel.Medium,
         tyreDegradation: 0.75,
+        pitLaneTimeSecs: 22,
         overtakingDifficulty: TrackOvertakingDifficulty.Medium,
         startFinishProgress: 1.5,
         sectors: [

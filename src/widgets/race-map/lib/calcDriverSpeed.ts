@@ -1,14 +1,14 @@
 import type { DriverSkills, TeamStats } from '@entities';
 
-const MIN_MULTIPLIER = 0.85;
-const MAX_MULTIPLIER = 1.15;
+const MIN_MULTIPLIER = 0.97;
+const MAX_MULTIPLIER = 1.03;
 
 // Speed bonus on the normalised multiplier granted by each compound when tyre is fresh
 const TYRE_COMPOUND_BONUS: Record<string, number> = {
-    Soft:   0.20,
-    Medium: 0.00,
-    Hard:  -0.02,
-    Wet:    0.00,
+    Soft:   0.015,
+    Medium: 0.000,
+    Hard:  -0.005,
+    Wet:    0.000,
 };
 
 // Wear added per lap (percentage points)
@@ -19,8 +19,8 @@ export const TYRE_DEGRADATION_PER_LAP: Record<string, number> = {
     Wet:    2.0,
 };
 
-// Base speed loss per wear point, applied regardless of compound
-const BASE_WEAR_PENALTY = 0.0005;
+// 100% worn tyre = -0.020 speed loss (~2% slower); 50% worn = -0.010
+const BASE_WEAR_PENALTY = 0.0002;
 
 /**
  * Compound bonus scales from full value at 0% wear to 0 at 100% wear.
@@ -64,7 +64,7 @@ function calcRawSpeed(skills: DriverSkills, teamStats: TeamStats): number {
         teamStats.downforce     * 0.10 +
         teamStats.ersEfficiency * 0.10;
 
-    return driverScore * 0.40 + teamScore * 0.60;
+    return driverScore * 0.30 + teamScore * 0.70;
 }
 
 /**

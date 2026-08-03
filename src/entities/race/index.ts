@@ -37,6 +37,7 @@ export type WeatherCondition = typeof WeatherCondition[keyof typeof WeatherCondi
 export const DriverStatus = {
     RACING: 'RACING',
     PIT: 'PIT',
+    FINISHED: 'FINISHED',
     RETIRED: 'RETIRED',
     DNF: 'DNF',
 } as const;
@@ -79,6 +80,7 @@ export interface RaceEvent {
 export const RaceEventType = {
     OVERTAKE: 'OVERTAKE',
     PIT_STOP: 'PIT_STOP',
+    PIT_EXIT: 'PIT_EXIT',
     CRASH: 'CRASH',
     MECHANICAL_FAILURE: 'MECHANICAL_FAILURE',
     PENALTY: 'PENALTY',
