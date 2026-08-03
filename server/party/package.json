@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@motorsport/race-engine": "*",
-    "partykit": "^0.0.116"
+    "partykit": "^0.0.115"
   },
   "devDependencies": {
     "typescript": "~6.0.2"

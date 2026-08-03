@@ -2,7 +2,6 @@ import type * as Party from 'partykit/server';
 import {
     RaceEngine,
     AIStrategyManager,
-    buildSpeedMapFromPath,
     calcSpeedMultipliers,
     calcEffectiveDegradationRate,
     RaceStatus,
@@ -17,6 +16,7 @@ import {
     type TeamStrategyProfile,
     type DriverDelta,
 } from '@motorsport/race-engine';
+import { buildSpeedMapFromPath } from '../../../packages/race-engine/src/buildSpeedMapServer';
 
 // ─── Types stored in Party durable storage ───────────────────────────────────
 

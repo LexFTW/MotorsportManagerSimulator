@@ -4,6 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "strict": true,
+    "baseUrl": ".",
     "paths": {
       "@motorsport/race-engine": ["../../packages/race-engine/src/index.ts"]
     }

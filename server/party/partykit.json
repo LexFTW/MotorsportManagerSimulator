@@ -1,6 +1,7 @@
 {
-  "name":    "motorsport-party",
-  "main":    "src/race.ts",
+  "name":              "motorsport-party",
+  "main":              "src/race.ts",
+  "compatibilityDate": "2026-08-03",
   "parties": {
     "lobby": "src/lobby.ts"
   }
