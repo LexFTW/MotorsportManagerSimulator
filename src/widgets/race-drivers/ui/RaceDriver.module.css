@@ -240,3 +240,123 @@
     font-size: 1rem;
     opacity: 0.75;
 }
+
+/* ── MOBILE ── */
+@media (max-width: 767px) {
+    .container {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: 0.5rem;
+        padding: 0;
+    }
+
+    .driverCard {
+        width: 100%;
+    }
+
+    .header {
+        height: auto;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0.85rem 1rem;
+        gap: 0.75rem;
+    }
+
+    .dorsal {
+        position: static;
+        font-size: 1.9rem;
+        padding-right: 0.65rem;
+    }
+
+    .driverInfo {
+        position: static;
+    }
+
+    .firstName {
+        font-size: 0.62rem;
+    }
+
+    .lastName {
+        font-size: 1.1rem;
+    }
+
+    /* small thumbnail, top-right of header */
+    .photoWrapper {
+        display: block;
+        width: 68px;
+        height: 86px;
+        top: 0;
+        right: 0;
+        bottom: auto;
+    }
+
+    .teamLogo {
+        width: 100px;
+        height: 100px;
+        bottom: -12px;
+    }
+
+    /* tyre + fuel stacked as rows */
+    .stats {
+        margin-top: 0;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    /* each stat as a compact horizontal strip */
+    .statBox {
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0.4rem 0.6rem;
+        gap: 0.5rem;
+        border-radius: 8px;
+    }
+
+    .statBox svg {
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+    }
+
+    .fuelGaugeWrapper {
+        flex-shrink: 0;
+    }
+
+    .fuelGaugeWrapper svg {
+        width: 52px;
+        height: 30px;
+    }
+
+    .fuelIcon {
+        font-size: 1rem;
+        margin-top: -6px;
+    }
+
+    .gaugeDelta {
+        font-size: 0.85rem;
+        margin-top: 0;
+    }
+
+    .gaugeValue {
+        font-size: 0.65rem;
+        text-align: left;
+    }
+
+    .gaugeLabel {
+        font-size: 0.52rem;
+        text-align: left;
+    }
+
+    .barSection {
+        padding: 0.3rem 0.75rem 0;
+    }
+
+    .pitButton {
+        padding: 0.6rem 0.9rem;
+        margin: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+}

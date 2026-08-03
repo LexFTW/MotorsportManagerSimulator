@@ -24,7 +24,7 @@ export const RacePage = () => {
             <div style={{ position: 'fixed', top: 0, left: 0, width: '100%' }}>
                 <div className="container-fluid my-3" style={{ position: 'relative', zIndex: 1999 }}>
                     <div className="row">
-                        <div className="col-4">
+                        <div className="col-4 d-none d-md-block">
                             {showTiming && <RaceTiming />}
                             {showTiming && <RaceEvents />}
                         </div>
@@ -33,6 +33,12 @@ export const RacePage = () => {
                             style={{ position: 'relative', height: '100vh', display: centerVisible ? 'flex' : 'none' }}
                         >
                             <RaceHeader />
+                            <div className="d-block d-md-none">
+                                { showTiming && <RaceTiming /> }
+                                { showDrivers && <RaceDrivers /> }
+                            </div>
+
+
                             <div style={{ marginBottom: '1.7rem' }}>
                                 <RaceControl
                                     onToggleTiming={() => setShowTiming(v => !v)}
@@ -40,7 +46,7 @@ export const RacePage = () => {
                                 />
                             </div>
                         </div>
-                        <div className={`col-4 ${styles.driversCol}`}>
+                        <div className={`col-4 d-none d-md-block`}>
                             {showDrivers && <RaceDrivers />}
                         </div>
                     </div>
