@@ -1,6 +1,15 @@
+import barcelonaBackground from '@shared/assets/images/circuits/barcelona/track.png';
 import barcelonaSvgRaw from '@shared/assets/images/circuits/barcelona/track.svg?raw';
+import BarcelonaSvg from '@shared/assets/images/circuits/barcelona/track.svg?react';
+
+import spaBackground from '@shared/assets/images/circuits/spa-francorchamps/track.jpg';
 import spaSvgRaw from '@shared/assets/images/circuits/spa-francorchamps/track.svg?raw';
+import SpaSvg from '@shared/assets/images/circuits/spa-francorchamps/track.svg?react';
+
+import monzaBackground from '@shared/assets/images/circuits/monza/track.jpg';
 import monzaSvgRaw from '@shared/assets/images/circuits/monza/track.svg?raw';
+import MonzaSvg from '@shared/assets/images/circuits/monza/track.svg?react';
+
 import { parseTrackSvg } from '@shared/lib';
 import { TrackType, TrackDownforceLevel, TrackOvertakingDifficulty, type Circuit } from './types.ts';
 
@@ -11,6 +20,8 @@ export const CIRCUITS: Record<string, Circuit> = {
         location: 'Montmeló',
         country: 'Spain',
         countryCode: 'ES',
+        trackBackground: barcelonaBackground,
+        trackSvg: BarcelonaSvg,
         trackPath: parseTrackSvg(barcelonaSvgRaw),
         totalLaps: 66,
         lapDistanceKm: 4.655,
@@ -57,6 +68,8 @@ export const CIRCUITS: Record<string, Circuit> = {
         location: 'Stavelot',
         country: 'Belgium',
         countryCode: 'BE',
+        trackBackground: spaBackground,
+        trackSvg: SpaSvg,
         trackPath: parseTrackSvg(spaSvgRaw),
         totalLaps: 44,
         lapDistanceKm: 7.004,
@@ -103,6 +116,8 @@ export const CIRCUITS: Record<string, Circuit> = {
         location: 'Monza',
         country: 'Italy',
         countryCode: 'IT',
+        trackBackground: monzaBackground,
+        trackSvg: MonzaSvg,
         trackPath: parseTrackSvg(monzaSvgRaw),
         totalLaps: 53,
         lapDistanceKm: 5.793,

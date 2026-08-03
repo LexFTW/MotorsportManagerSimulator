@@ -1,9 +1,13 @@
+import type React from 'react';
+
 export interface Circuit {
     id: string;
     name: string;
     location: string;
     country: string;
     countryCode: string;
+    trackBackground: string;
+    trackSvg: React.ComponentType<React.SVGProps<SVGSVGElement>>;
     trackPath: TrackPath;
     totalLaps: number;
     lapDistanceKm: number;

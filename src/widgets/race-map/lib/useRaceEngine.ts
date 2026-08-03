@@ -3,20 +3,35 @@ import { useAppDispatch, useAppSelector } from '@app/store/hooks';
 import { selectMapDrivers } from '@app/store/selectors/raceMapSelectors';
 import { batchUpdateDrivers } from '@app/store/slices/raceDriversSlice';
 import { addEvents } from '@app/store/slices/raceEventsSlice';
-import { RaceEventType } from '@entities';
+import { advanceLap, setStatus } from '@app/store/slices/raceSessionSlice';
+import { RaceEventType, RaceStatus } from '@entities';
 import { SPEED_SAMPLES } from './buildSpeedMap';
 
 const BASE_STEP = 0.0005;
-// progress units map ~1:1 to lap fractions; one lap ≈ 80 simulated seconds at Barcelona
-const GAP_SCALE = 80;
+const GAP_SCALE = 80; // one lap ≈ 80 simulated seconds at Barcelona
+
+// sectorThresholds[0] = progress value at S1/S2 boundary (decreasing progress scale)
+// sectorThresholds[1] = progress value at S2/S3 boundary
+// sector 1: progress > thresholds[0]  (just after S/F crossing)
+// sector 2: thresholds[1] < progress ≤ thresholds[0]
+// sector 3: progress ≤ thresholds[1]  (approaching S/F)
+function getSector(progress: number, thresholds: [number, number]): 1 | 2 | 3 {
+    if (progress > thresholds[0]) return 1;
+    if (progress > thresholds[1]) return 2;
+    return 3;
+}
+
+// Stable rank: laps*3 + (sector-1) - progress
+// Guarantees no overlap between sectors; higher value = further ahead in the race
+function driverRank(lapsCompleted: number, sector: 1 | 2 | 3, progress: number): number {
+    return lapsCompleted * 3 + (sector - 1) - progress;
+}
 
 interface EngineDriver {
     id: string;
     progress: number;
-    // Seeded with initialProgress so initial rank matches the store; incremented by step each tick
-    // and by 1.0 on each lap completion — no wrap-around ambiguity
-    cumulativeDistance: number;
     lapsCompleted: number;
+    sector: 1 | 2 | 3;
     speedMultiplier: number;
     position: number;
 }
@@ -35,30 +50,54 @@ export function useRaceEngine(
     totalLengthRef: RefObject<number>,
     speedMapRef: RefObject<Float32Array | null>,
     pathReady: boolean,
+    sectorThresholds: [number, number],
     onPositionsUpdate: (positions: ScreenPosition[]) => void,
 ) {
     const dispatch = useAppDispatch();
     const mapDrivers = useAppSelector(selectMapDrivers);
     const mapDriversRef = useRef(mapDrivers);
-    mapDriversRef.current = mapDrivers;
+
+    const totalLaps = useAppSelector(state => state.session.totalLaps);
+    const totalLapsRef = useRef(totalLaps);
+
+    const thresholdsRef = useRef(sectorThresholds);
 
     const engineRef = useRef<EngineDriver[] | null>(null);
+    const prevLeaderLapsRef = useRef(0);
+    const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+    // Sync all "latest value" refs after every render so interval callbacks read current values
+    useEffect(() => {
+        mapDriversRef.current = mapDrivers;
+        totalLapsRef.current = totalLaps;
+        thresholdsRef.current = sectorThresholds;
+    });
 
     useEffect(() => {
         if (!pathReady) return;
 
         const initial = mapDriversRef.current;
-        // Sort descending: higher progress = further ahead on track at t=0
-        const sorted = [...initial].sort((a, b) => b.progress - a.progress);
-        engineRef.current = sorted.map((d, i) => ({
-            id: d.id,
-            progress: d.progress,
-            // Seed with initial track offset so ranking is correct from tick 0
-            cumulativeDistance: d.progress,
-            lapsCompleted: 0,
-            speedMultiplier: d.speedMultiplier,
-            position: i + 1,
-        }));
+        const thresholds = thresholdsRef.current;
+        engineRef.current = initial
+            .map(d => {
+                const sector = getSector(d.progress, thresholds);
+                return {
+                    id: d.id,
+                    progress: d.progress,
+                    lapsCompleted: d.lapsCompleted,
+                    sector,
+                    speedMultiplier: d.speedMultiplier,
+                    position: 0,
+                };
+            })
+            .sort((a, b) =>
+                driverRank(b.lapsCompleted, b.sector, b.progress) -
+                driverRank(a.lapsCompleted, a.sector, a.progress)
+            )
+            .map((d, i) => ({ ...d, position: i + 1 }));
+
+        // Sync prevLeaderLaps so the first real crossing is detected correctly
+        prevLeaderLapsRef.current = engineRef.current[0]?.lapsCompleted ?? 0;
     }, [pathReady]);
 
     useEffect(() => {
@@ -68,10 +107,11 @@ export function useRaceEngine(
         const total = totalLengthRef.current!;
         const speedMap = speedMapRef.current!;
 
-        const intervalId = setInterval(() => {
+        intervalIdRef.current = setInterval(() => {
             const engine = engineRef.current;
             if (!engine) return;
 
+            const thresholds = thresholdsRef.current;
             const prevPositions = new Map(engine.map(d => [d.id, d.position]));
 
             for (const d of engine) {
@@ -79,21 +119,22 @@ export function useRaceEngine(
                 const step = BASE_STEP * speedMap[idx] * d.speedMultiplier;
                 const newProgress = ((d.progress - step) + 1) % 1;
 
-                // Detect start/finish crossing: progress jumped from near-0 back to near-1
+                // S/F crossing: progress wraps from near-0 back to near-1
                 if (newProgress > d.progress + 0.5) {
                     d.lapsCompleted += 1;
-                    d.cumulativeDistance += 1.0;
                 }
 
-                d.cumulativeDistance += step;
                 d.progress = newProgress;
+                d.sector = getSector(newProgress, thresholds);
             }
 
-            const ranked = [...engine].sort((a, b) => b.cumulativeDistance - a.cumulativeDistance);
+            const ranked = [...engine].sort((a, b) =>
+                driverRank(b.lapsCompleted, b.sector, b.progress) -
+                driverRank(a.lapsCompleted, a.sector, a.progress)
+            );
             ranked.forEach((d, i) => { d.position = i + 1; });
 
-            const leaderDist = ranked[0].cumulativeDistance;
-            const currentLap = ranked[0].lapsCompleted;
+            const leader = ranked[0];
 
             const overtakeEvents = [];
             for (const d of engine) {
@@ -103,7 +144,7 @@ export function useRaceEngine(
                         o => o.id !== d.id && prevPositions.get(o.id) === d.position
                     );
                     overtakeEvents.push({
-                        lap: currentLap,
+                        lap: leader.lapsCompleted,
                         type: RaceEventType.OVERTAKE,
                         driverId: d.id,
                         description: `${d.id} adelantó a ${overtakee?.id ?? '?'}`,
@@ -120,7 +161,10 @@ export function useRaceEngine(
                     driverId: d.id,
                     position: d.position,
                     progress: d.progress,
-                    gap: (leaderDist - d.cumulativeDistance) * GAP_SCALE,
+                    lapsCompleted: d.lapsCompleted,
+                    sector: d.sector,
+                    gap: (leader.lapsCompleted - d.lapsCompleted) * GAP_SCALE
+                        + (d.progress - leader.progress) * GAP_SCALE,
                 }))
             ));
 
@@ -138,9 +182,24 @@ export function useRaceEngine(
             });
 
             onPositionsUpdate(screenPositions);
+
+            // Advance session lap counter each time the leader crosses S/F
+            if (leader.lapsCompleted > prevLeaderLapsRef.current) {
+                prevLeaderLapsRef.current = leader.lapsCompleted;
+                dispatch(advanceLap());
+            }
+
+            // Race over when the last driver completes all laps
+            const lastDriver = ranked[ranked.length - 1];
+            if (lastDriver.lapsCompleted >= totalLapsRef.current) {
+                dispatch(setStatus(RaceStatus.FINISHED));
+                if (intervalIdRef.current) clearInterval(intervalIdRef.current);
+            }
         }, 16);
 
-        return () => clearInterval(intervalId);
+        return () => {
+            if (intervalIdRef.current) clearInterval(intervalIdRef.current);
+        };
     // onPositionsUpdate is a stable callback — intentionally excluded from deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pathReady, dispatch]);

@@ -3,7 +3,7 @@ import { RaceStatus, WeatherCondition } from '@entities';
 import type { RaceSession, RaceWeather } from '@entities';
 
 const initialState: RaceSession = {
-    circuitId: 'barcelona',
+    circuitId: 'monza',
     totalLaps: 53,
     currentLap: 0,
     status: RaceStatus.PRE_RACE,

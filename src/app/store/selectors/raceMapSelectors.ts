@@ -28,6 +28,7 @@ export const selectMapDrivers = createSelector(
             teamLogo: entries[i].team?.logo ?? '',
             color: entries[i].team?.color ?? '#FFFFFF',
             progress: d.progress,
+            lapsCompleted: d.lapsCompleted,
             speedMultiplier: multipliers[i],
         }));
     }

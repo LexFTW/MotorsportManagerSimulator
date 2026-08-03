@@ -48,6 +48,8 @@ export interface RaceDriverState {
     gap: number; // in seconds
     interval: number; // in seconds
     currentLap: number;
+    lapsCompleted: number; // engine lap counter, seeded from store on reinit
+    sector: 1 | 2 | 3;    // current track sector
     lastLapTime: number; // in seconds
     bestLapTime: number; // in seconds
     progress: number; // percentage of race completed

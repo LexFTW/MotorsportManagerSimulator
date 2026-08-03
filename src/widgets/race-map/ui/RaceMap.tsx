@@ -1,7 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./RaceMap.module.css";
-import TrackBackground from "@shared/assets/images/circuits/barcelona/track.png";
-import TrackSvg from "@shared/assets/images/circuits/barcelona/track.svg?react";
 import { DriverMarker } from "./DriverMarker";
 import { buildSpeedMap } from "../lib/buildSpeedMap";
 import { useRaceEngine, type ScreenPosition } from "../lib/useRaceEngine";
@@ -36,8 +34,18 @@ export const RaceMap = () => {
 
     const circuitId = useAppSelector(state => state.session.circuitId);
     const circuit = CIRCUITS[circuitId];
+    const TrackSvg = circuit.trackSvg;
     const bp = useBreakpoint();
     const circuitStyle = circuit.styles[bp];
+
+    // Sector boundaries as progress thresholds (progress decreases as driver advances)
+    // sector 1: progress > thresholds[0], sector 2: thresholds[1]..thresholds[0], sector 3: ≤ thresholds[1]
+    const sectorThresholds = useMemo((): [number, number] => {
+        const total = circuit.lapDistanceKm;
+        const s1 = circuit.sectors[0].distanceKm / total;
+        const s2 = (circuit.sectors[0].distanceKm + circuit.sectors[1].distanceKm) / total;
+        return [1 - s1, 1 - s2];
+    }, [circuit]);
 
     useEffect(() => {
         if (!pathRef.current) return;
@@ -51,7 +59,7 @@ export const RaceMap = () => {
         setScreenPositions(positions);
     }, []);
 
-    useRaceEngine(pathRef, totalLengthRef, speedMapRef, pathReady, handlePositionsUpdate);
+    useRaceEngine(pathRef, totalLengthRef, speedMapRef, pathReady, sectorThresholds, handlePositionsUpdate);
 
     const positionStyle = {
         top: circuitStyle.top,
@@ -62,13 +70,13 @@ export const RaceMap = () => {
 
     return (
         <>
-            <div style={{ backgroundImage: `url(${TrackBackground})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: bp === 'mobile' ? 'contain' : 'cover', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, filter: 'blur(4px)' }} />
+            <div style={{ backgroundImage: `url(${circuit.trackBackground})`,
+            backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: bp === 'mobile' ? 'contain' : 'cover', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, filter: 'blur(4px)' }} />
             <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1000, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
 
             {circuit.trackPath && (
                 <TrackSvg className={styles.track} style={positionStyle} />
             )}
-            {/* <TrackSvg className={styles.track} style={positionStyle} /> */}
 
             <svg className={styles.trackOverlay} style={positionStyle} viewBox={circuit.trackPath.viewBox}>
                 <path ref={pathRef} d={circuit.trackPath.d} visibility="hidden" />
