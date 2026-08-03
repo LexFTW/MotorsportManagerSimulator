@@ -39,7 +39,7 @@ export const DRIVERS: Driver[] = [
         id: 'VER',
         team: 'red-bull',
         identity: { firstName: 'Max', lastName: 'Verstappen', code: 'VER', dorsal: 1, photo: maxVerstappenPhoto, country: 'NL' },
-        skills: { pace: 99, consistency: 96, tyreManagement: 90, aggressiveness: 94, wetSkills: 98, starts: 95, experience: 92 },
+        skills: { pace: 97, consistency: 93, tyreManagement: 90, aggressiveness: 94, wetSkills: 98, starts: 95, experience: 88 },
     },
     {
         id: 'LEC',
@@ -57,7 +57,7 @@ export const DRIVERS: Driver[] = [
         id: 'ANT',
         team: 'mercedes',
         identity: { firstName: 'Kimi', lastName: 'Antonelli', code: 'ANT', dorsal: 12, photo: kimiAntonelliPhoto, country: 'IT' },
-        skills: { pace: 88, consistency: 80, tyreManagement: 78, aggressiveness: 82, wetSkills: 80, starts: 78, experience: 58 },
+        skills: { pace: 89, consistency: 82, tyreManagement: 83, aggressiveness: 85, wetSkills: 80, starts: 78, experience: 60 },
     },
     {
         id: 'HAM',
@@ -81,7 +81,7 @@ export const DRIVERS: Driver[] = [
         id: 'STR',
         team: 'aston-martin',
         identity: { firstName: 'Lance', lastName: 'Stroll', code: 'STR', dorsal: 18, photo: lanceStrollPhoto, country: 'CA' },
-        skills: { pace: 82, consistency: 78, tyreManagement: 80, aggressiveness: 75, wetSkills: 76, starts: 78, experience: 76 },
+        skills: { pace: 86, consistency: 82, tyreManagement: 83, aggressiveness: 80, wetSkills: 76, starts: 78, experience: 85 },
     },
     {
         id: 'GAS',
@@ -141,7 +141,7 @@ export const DRIVERS: Driver[] = [
         id: 'BEA',
         team: 'haas',
         identity: { firstName: 'Oliver', lastName: 'Bearman', code: 'BEA', dorsal: 87, photo: oliverBearmanPhoto, country: 'GB' },
-        skills: { pace: 82, consistency: 78, tyreManagement: 78, aggressiveness: 80, wetSkills: 76, starts: 78, experience: 60 },
+        skills: { pace: 82, consistency: 79, tyreManagement: 78, aggressiveness: 80, wetSkills: 76, starts: 78, experience: 62 },
     },
     {
         id: 'BOT',

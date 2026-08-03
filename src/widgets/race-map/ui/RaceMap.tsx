@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./RaceMap.module.css";
-import TrackBackground from "@shared/assets/images/circuits/monza/track.jpg";
-import TrackSvg from "@shared/assets/images/circuits/monza/track.svg?react";
+import TrackBackground from "@shared/assets/images/circuits/barcelona/track.png";
+import TrackSvg from "@shared/assets/images/circuits/barcelona/track.svg?react";
 import { DriverMarker } from "./DriverMarker";
 import { buildSpeedMap } from "../lib/buildSpeedMap";
 import { useRaceEngine, type ScreenPosition } from "../lib/useRaceEngine";

@@ -18,7 +18,7 @@ function calcRawSpeed(skills: DriverSkills, teamStats: TeamStats): number {
         teamStats.downforce     * 0.10 +
         teamStats.ersEfficiency * 0.10;
 
-    return driverScore * 0.55 + teamScore * 0.45;
+    return driverScore * 0.40 + teamScore * 0.60;
 }
 
 /**
