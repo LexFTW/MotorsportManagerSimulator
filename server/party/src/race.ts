@@ -2,18 +2,12 @@ import type * as Party from 'partykit/server';
 import {
     RaceEngine,
     AIStrategyManager,
-    calcSpeedMultipliers,
-    calcEffectiveDegradationRate,
     RaceStatus,
-    RaceEventType,
-    TyreCompound,
-    DEFAULT_STRATEGY,
     type C2SMessage,
     type S2CMessage,
     type EngineDriver,
     type PlayerSlot,
     type FullRaceState,
-    type TeamStrategyProfile,
     type DriverDelta,
 } from '@motorsport/race-engine';
 import { buildSpeedMapFromPath } from '../../../packages/race-engine/src/buildSpeedMapServer';
@@ -46,6 +40,7 @@ export default class RaceParty implements Party.Server {
 
     // ─── Connection lifecycle ─────────────────────────────────────────────────
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async onConnect(conn: Party.Connection, ctx: Party.ConnectionContext): Promise<void> {
         // Send current state so the client can render immediately on connect
         const storage = await this.loadStorage();
@@ -224,6 +219,7 @@ export default class RaceParty implements Party.Server {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     private async handleStartRace(sender: Party.Connection): Promise<void> {
         const storage = await this.loadStorage();
         if (!storage || storage.status !== 'LOBBY') return;

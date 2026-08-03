@@ -47,10 +47,12 @@ export function useMultiplayerSession({
     teamId,
     strategy,
 }: UseMultiplayerSessionOptions): UseMultiplayerSessionReturn {
-    const dispatch   = useAppDispatch();
-    const wsRef      = useRef<WebSocket | null>(null);
-    const stratRef   = useRef(strategy);
-    const mountedRef = useRef(true);
+    const dispatch    = useAppDispatch();
+    const wsRef       = useRef<WebSocket | null>(null);
+    const stratRef    = useRef(strategy);
+    const mountedRef  = useRef(true);
+    // avoids TDZ circular reference inside the reconnect setTimeout
+    const connectRef  = useRef<() => void>(() => {});
 
     const [mpStatus, setMpStatus] = useState<MultiplayerStatus>('IDLE');
     const [yourTeam, setYourTeam] = useState<string | null>(null);
@@ -146,8 +148,12 @@ export function useMultiplayerSession({
         if (!mountedRef.current) return;
         setMpStatus('CONNECTING');
 
-        const url = `wss://${partyKitHost}/parties/main/${sessionId}`;
-        const ws  = new WebSocket(url);
+        // PartyKit dev server doesn't use TLS; production hosts do
+        const isLocal = /^localhost(:\d+)?$|^127\.|^192\.168\.|^10\.|^172\.(1[6-9]|2\d|3[01])\./.test(partyKitHost);
+        const scheme  = isLocal ? 'ws' : 'wss';
+        // Main party uses /party/:roomId; named parties use /parties/:name/:roomId
+        const url     = `${scheme}://${partyKitHost}/party/${sessionId}`;
+        const ws      = new WebSocket(url);
         wsRef.current = ws;
 
         ws.onopen = () => {
@@ -166,14 +172,15 @@ export function useMultiplayerSession({
         ws.onclose = () => {
             if (!mountedRef.current) return;
             setMpStatus('DISCONNECTED');
-            // Auto-reconnect after delay
-            setTimeout(connect, RECONNECT_DELAY_MS);
+            setTimeout(() => connectRef.current(), RECONNECT_DELAY_MS);
         };
 
         ws.onerror = () => {
             ws.close();
         };
     }, [partyKitHost, sessionId, teamId, send, handleMessage]);
+
+    useEffect(() => { connectRef.current = connect; }, [connect]);
 
     useEffect(() => {
         mountedRef.current = true;
