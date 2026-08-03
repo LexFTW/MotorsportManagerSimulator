@@ -26,10 +26,10 @@ export const CIRCUITS: Record<string, Circuit> = {
         ],
         styles: {
             mobile: {
-                top: '-80px',
+                top: 'calc(50vh - 28.13vw)',
                 left: '0px',
                 width: '100%',
-                height: '110%',
+                height: '56.27vw',
             },
             tablet: {
                 top: '-180px',
@@ -72,10 +72,10 @@ export const CIRCUITS: Record<string, Circuit> = {
         ],
         styles: {
             mobile: {
-                top: '-80px',
+                top: 'calc(50vh - 28.13vw)',
                 left: '0px',
                 width: '100%',
-                height: '110%',
+                height: '56.27vw',
             },
             tablet: {
                 top: '-180px',
@@ -118,10 +118,10 @@ export const CIRCUITS: Record<string, Circuit> = {
         ],
         styles: {
             mobile: {
-                top: '-80px',
+                top: 'calc(50vh - 28.13vw)',
                 left: '0px',
                 width: '100%',
-                height: '110%',
+                height: '56.27vw',
             },
             tablet: {
                 top: '-180px',
