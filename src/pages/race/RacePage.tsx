@@ -3,8 +3,8 @@ import { RaceLayout } from "@shared/ui/layouts/RaceLayout";
 import { RaceControl, RaceEvents, RaceHeader, RaceMap, RaceTiming, RaceDrivers } from "@widgets";
 import styles from "./RacePage.module.css";
 export const RacePage = () => {
-    const [showTiming, setShowTiming] = useState(true);
-    const [showDrivers, setShowDrivers] = useState(true);
+    const [showTiming, setShowTiming] = useState(false);
+    const [showDrivers, setShowDrivers] = useState(false);
 
     return (
         <RaceLayout>
@@ -15,9 +15,9 @@ export const RacePage = () => {
                             {showTiming && <RaceTiming />}
                             {showTiming && <RaceEvents />}
                         </div>
-                        <div className="col-4" style={{ position: 'relative'}}>
+                        <div className="col-md-4 col-sm-12 d-flex flex-column justify-content-between" style={{ position: 'relative', height: '100vh' }}>
                             <RaceHeader />
-                            <div className={styles.controlWrapper}>
+                            <div style={{ marginBottom: '1.7rem'}}>
                                 <RaceControl
                                     onToggleTiming={() => setShowTiming(v => !v)}
                                     onToggleDrivers={() => setShowDrivers(v => !v)}

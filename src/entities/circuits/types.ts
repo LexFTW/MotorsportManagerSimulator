@@ -3,6 +3,7 @@ export interface Circuit {
     name: string;
     location: string;
     country: string;
+    countryCode: string;
     trackPath: TrackPath;
     totalLaps: number;
     lapDistanceKm: number;

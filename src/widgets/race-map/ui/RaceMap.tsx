@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./RaceMap.module.css";
-import TrackBackground from "@shared/assets/images/circuits/barcelona/track.png";
-import TrackSvg from "@shared/assets/images/circuits/barcelona/track.svg?react";
+import TrackBackground from "@shared/assets/images/circuits/monza/track.jpg";
+import TrackSvg from "@shared/assets/images/circuits/monza/track.svg?react";
 import { DriverMarker } from "./DriverMarker";
 import { buildSpeedMap } from "../lib/buildSpeedMap";
 import { useRaceEngine, type ScreenPosition } from "../lib/useRaceEngine";
@@ -65,7 +65,10 @@ export const RaceMap = () => {
             <div style={{ backgroundImage: `url(${TrackBackground})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, filter: 'blur(4px)' }} />
             <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1000, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
 
-            <TrackSvg className={styles.track} style={positionStyle} />
+            {circuit.trackPath && (
+                <TrackSvg className={styles.track} style={positionStyle} />
+            )}
+            {/* <TrackSvg className={styles.track} style={positionStyle} /> */}
 
             <svg className={styles.trackOverlay} style={positionStyle} viewBox={circuit.trackPath.viewBox}>
                 <path ref={pathRef} d={circuit.trackPath.d} visibility="hidden" />

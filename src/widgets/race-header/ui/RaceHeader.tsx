@@ -1,39 +1,31 @@
-// import ReactCountryFlag from "react-country-flag";
 import ReactCountryFlag from "react-country-flag";
-import styles from "./RaceHeader.module.css";
-import { Card, CardBody } from "@/shared/ui/components";
+import { Card } from "@/shared/ui/components";
+import { useAppSelector } from "@/app/store/hooks";
+import { CIRCUITS } from "@/entities/circuits/circuits.data";
 
 export const RaceHeader = () => {
+    const circuitId = useAppSelector(state => state.session.circuitId);
+    const circuit = CIRCUITS[circuitId];
+    const raceSession = useAppSelector(state => state.session);
+
+    console.log(JSON.stringify(circuit));
+
     return (
         <Card>
-            <CardBody>
-                <div className={styles.container}>
-                    <div className={styles.left}>
-                        
+                <div className="row align-items-center">
+                    <div className="col">
                         <div style={{ display: "flex", flexDirection: "column", marginLeft: '0.5rem', verticalAlign: 'middle', justifyContent: 'center'}}>
                             <div>
-                                <ReactCountryFlag countryCode="ES" width={60} svg/>  
-                                <span style={{marginLeft: '1rem', fontWeight: 'bold'}}>GP Spain</span>
+                                <ReactCountryFlag countryCode={circuit.countryCode} width={60} svg/>  
+                                <span style={{marginLeft: '1rem', fontWeight: 'bold'}}>GP {circuit.country}</span>
                             </div>
-                            <span>Circuit de Barcelona-Catalunya</span>
+                            <span>{circuit.name}</span>
                         </div>
                     </div>
-
-                    <div className={styles.right}>
-                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                            <span style={{ margin: '0.4rem', textAlign: "right"}}>Tiempo</span>
-                            <span style={{ textAlign: "right" }}>Pista</span>
-                            <span style={{ marginTop: '1rem', textAlign: "right"}}>Lluvia</span>
-                        </div>
-
-                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                            <span style={{ margin: '0.4rem'}}>☀️</span>
-                            <span>32ºC</span>
-                            <span style={{ marginTop: '1rem'}}>0%</span>
-                        </div>
+                    <div className="col-2" style={{ fontWeight: 'bold', fontSize: '1.2rem', textAlign: 'right', marginRight: '0.5rem'}}>
+                        <span>{raceSession.currentLap} / {raceSession.totalLaps}</span>
                     </div>
                 </div>
-            </CardBody>
         </Card>
     );
 };
