@@ -8,12 +8,14 @@ import { useRaceEngine, type ScreenPosition } from "../lib/useRaceEngine";
 import { useAppSelector } from "@app/store/hooks";
 import { CIRCUITS } from "@entities";
 
-type Breakpoint = 'mobile' | 'tablet' | 'desktop';
+type Breakpoint = 'mobile' | 'tablet' | 'desktop' | 'landscape';
 
 function useBreakpoint(): Breakpoint {
     const get = (): Breakpoint => {
-        if (window.innerWidth < 768) return 'mobile';
-        if (window.innerWidth < 1280) return 'tablet';
+        const { innerWidth: w, innerHeight: h } = window;
+        if (w > h && h <= 450) return 'landscape';
+        if (w < 768) return 'mobile';
+        if (w < 1280) return 'tablet';
         return 'desktop';
     };
     const [bp, setBp] = useState<Breakpoint>(get);

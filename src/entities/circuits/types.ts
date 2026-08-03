@@ -58,4 +58,6 @@ export interface CircuitStyles {
     mobile: CircuitDeviceStyles;
     tablet: CircuitDeviceStyles;
     desktop: CircuitDeviceStyles;
+    /** landscape phones/tablets (e.g. 873×393) */
+    landscape: CircuitDeviceStyles;
 }

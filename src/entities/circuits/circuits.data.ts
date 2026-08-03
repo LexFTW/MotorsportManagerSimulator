@@ -40,6 +40,12 @@ export const CIRCUITS: Record<string, Circuit> = {
                 width: '92%',
                 height: '170%',
             },
+            landscape: {
+                top: '-60px',
+                left: '30px',
+                width: '88%',
+                height: '150%',
+            },
         },
     },
 };

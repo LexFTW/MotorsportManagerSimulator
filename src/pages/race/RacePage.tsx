@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { RaceLayout } from "@shared/ui/layouts/RaceLayout";
 import { RaceControl, RaceEvents, RaceHeader, RaceMap, RaceTiming, RaceDrivers } from "@widgets";
+import styles from "./RacePage.module.css";
 export const RacePage = () => {
     const [showTiming, setShowTiming] = useState(true);
     const [showDrivers, setShowDrivers] = useState(true);
@@ -16,14 +17,14 @@ export const RacePage = () => {
                         </div>
                         <div className="col-4" style={{ position: 'relative'}}>
                             <RaceHeader />
-                            <div style={{ position: 'absolute', top: '840px', width: '100%' }}>
+                            <div className={styles.controlWrapper}>
                                 <RaceControl
                                     onToggleTiming={() => setShowTiming(v => !v)}
                                     onToggleDrivers={() => setShowDrivers(v => !v)}
                                 />
                             </div>
                         </div>
-                        <div className="col-4">
+                        <div className={`col-4 ${styles.driversCol}`}>
                             {showDrivers && <RaceDrivers />}
                         </div>
                     </div>

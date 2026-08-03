@@ -4,6 +4,21 @@
     justify-content: space-between;
 }
 
+.controlWrapper {
+    position: absolute;
+    top: 840px;
+    width: 100%;
+}
+
+@media (max-height: 450px) and (orientation: landscape) {
+    .controlWrapper {
+        top: 290px;
+    }
+    .driversCol {
+        display: none;
+    }
+}
+
 .col{
     display: flex;
     flex-direction: column;

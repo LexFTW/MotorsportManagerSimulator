@@ -55,6 +55,15 @@
     gap: 24px;
 }
 
+@media (max-height: 450px) and (orientation: landscape) {
+    .center {
+        gap: 16px;
+    }
+    .right {
+        gap: 12px;
+    }
+}
+
 .timer {
     font-family: var(--font-racing);
     font-size: 1.2rem;

@@ -38,6 +38,12 @@ td{
     margin-left: 0.75rem;
 }
 
+@media (max-height: 450px) and (orientation: landscape) {
+    .cardBodyTiming {
+        max-height: 260px;
+    }
+}
+
 .cardBodyTiming::-webkit-scrollbar {
     display: none;
     overflow: -moz-scrollbars-none;
