@@ -20,7 +20,7 @@ export const TEAMS: Team[] = [
         country: 'DE',
         color: '#00D2BE',
         logo: mercedesLogo,
-        stats: { pace: 88, reliability: 88, downforce: 84, topSpeed: 86, tyreUsage: 83, pitCrewSpeed: 91, ersEfficiency: 91 },
+        stats: { pace: 90, reliability: 88, downforce: 84, topSpeed: 87, tyreUsage: 85, pitCrewSpeed: 91, ersEfficiency: 91 },
     },
     {
         id: 'ferrari',
@@ -28,7 +28,7 @@ export const TEAMS: Team[] = [
         country: 'IT',
         color: '#DC0000',
         logo: ferrariLogo,
-        stats: { pace: 93, reliability: 84, downforce: 82, topSpeed: 92, tyreUsage: 85, pitCrewSpeed: 90, ersEfficiency: 87 },
+        stats: { pace: 90, reliability: 83, downforce: 82, topSpeed: 89, tyreUsage: 85, pitCrewSpeed: 90, ersEfficiency: 87 },
     },
     {
         id: 'mclaren',
@@ -103,3 +103,110 @@ export const TEAMS: Team[] = [
         stats: { pace: 70, reliability: 78, downforce: 75, topSpeed: 79, tyreUsage: 65, pitCrewSpeed: 72, ersEfficiency: 68 },
     }
 ];
+
+
+// import type { Team } from './index';
+// import {
+//     audiLogo,
+//     ferrariLogo,
+//     haasLogo,
+//     mclarenLogo,
+//     mercedesLogo,
+//     redbullracingLogo,
+//     racingbullsLogo,
+//     williamsLogo,
+//     alpineLogo,
+//     astonMartinLogo,
+//     cadillacLogo,
+// } from '@shared/assets/images/teams';
+
+// export const TEAMS: Team[] = [
+//     {
+//         id: 'mercedes',
+//         name: 'Mercedes',
+//         country: 'DE',
+//         color: '#00D2BE',
+//         logo: mercedesLogo,
+//         stats: { pace: 70, reliability: 70, downforce: 70, topSpeed: 70, tyreUsage: 70, pitCrewSpeed: 70, ersEfficiency: 70 },
+//     },
+//     {
+//         id: 'ferrari',
+//         name: 'Ferrari',
+//         country: 'IT',
+//         color: '#DC0000',
+//         logo: ferrariLogo,
+//         stats: { pace: 70, reliability: 70, downforce: 70, topSpeed: 70, tyreUsage: 70, pitCrewSpeed: 70, ersEfficiency: 70 },
+//     },
+//     {
+//         id: 'mclaren',
+//         name: 'McLaren',
+//         country: 'GB',
+//         color: '#FF8700',
+//         logo: mclarenLogo,
+//         stats: { pace: 70, reliability: 70, downforce: 70, topSpeed: 70, tyreUsage: 70, pitCrewSpeed: 70, ersEfficiency: 70 },
+//     },
+//     {
+//         id: 'red-bull',
+//         name: 'Red Bull Racing',
+//         country: 'AT',
+//         color: '#1E41FF',
+//         logo: redbullracingLogo,
+//         stats: { pace: 70, reliability: 70, downforce: 70, topSpeed: 70, tyreUsage: 70, pitCrewSpeed: 70, ersEfficiency: 70 },
+//     },
+//     {
+//         id: 'rb',
+//         name: 'RB',
+//         country: 'IT',
+//         color: '#6692FF',
+//         logo: racingbullsLogo,
+//         stats: { pace: 70, reliability: 70, downforce: 70, topSpeed: 70, tyreUsage: 70, pitCrewSpeed: 70, ersEfficiency: 70 },
+//     },
+//     {
+//         id: 'alpine',
+//         name: 'Alpine',
+//         country: 'FR',
+//         color: '#0090FF',
+//         logo: alpineLogo,
+//         stats: { pace: 70, reliability: 70, downforce: 70, topSpeed: 70, tyreUsage: 70, pitCrewSpeed: 70, ersEfficiency: 70 },
+//     },
+//     {
+//         id: 'haas',
+//         name: 'Haas',
+//         country: 'US',
+//         color: '#B6B6B6',
+//         logo: haasLogo,
+//         stats: { pace: 70, reliability: 70, downforce: 70, topSpeed: 70, tyreUsage: 70, pitCrewSpeed: 70, ersEfficiency: 70 },
+//     },
+//     {
+//         id: 'audi',
+//         name: 'Audi',
+//         country: 'DE',
+//         color: '#F50537',
+//         logo: audiLogo,
+//         stats: { pace: 70, reliability: 70, downforce: 70, topSpeed: 70, tyreUsage: 70, pitCrewSpeed: 70, ersEfficiency: 70 },
+//     },
+//     {
+//         id: 'williams',
+//         name: 'Williams',
+//         country: 'GB',
+//         color: '#00A3E0',
+//         logo: williamsLogo,
+//         stats: { pace: 70, reliability: 70, downforce: 70, topSpeed: 70, tyreUsage: 70, pitCrewSpeed: 70, ersEfficiency: 70 },
+//     },
+//     {
+//         id: 'aston-martin',
+//         name: 'Aston Martin',
+//         country: 'GB',
+//         color: '#006F62',
+//         logo: astonMartinLogo,
+//         stats: { pace: 70, reliability: 70, downforce: 70, topSpeed: 70, tyreUsage: 70, pitCrewSpeed: 70, ersEfficiency: 70 },
+//     },
+//     {
+//         id: 'cadillac',
+//         name: 'Cadillac',
+//         country: 'US',
+//         color: '#005BAC',
+//         logo: cadillacLogo,
+//         stats: { pace: 70, reliability: 70, downforce: 70, topSpeed: 70, tyreUsage: 70, pitCrewSpeed: 70, ersEfficiency: 70 },
+//     }
+// ];

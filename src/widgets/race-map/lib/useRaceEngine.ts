@@ -11,6 +11,9 @@ import { planPitStrategy, shouldPitNow, type DriverStrategyPlan } from './pitStr
 
 const BASE_STEP = 0.0005;
 const GAP_SCALE = 80; // one lap ≈ 80 simulated seconds at Barcelona
+const DRS_SPEED_BOOST = 0.035; // ~3.5% speed gain in the DRS zone
+const DRS_WINDOW = 1.0;        // max interval (sim-seconds) to be DRS eligible
+const DRS_MIN_LAP = 0;         // DRS disabled for the first 2 laps
 
 // sectorThresholds[0] = progress value at S1/S2 boundary (decreasing progress scale)
 // sectorThresholds[1] = progress value at S2/S3 boundary
@@ -58,6 +61,9 @@ interface EngineDriver {
     pitEntryTyreAge: number;
     pitDurationSecs: number;
     isFinished: boolean;
+    drsActive: boolean;
+    prevProgress: number;
+    drsEligibleZones: boolean[];
 }
 
 export interface ScreenPosition {
@@ -70,6 +76,7 @@ export interface ScreenPosition {
     y: number;
     isPitting: boolean;
     isFinished: boolean;
+    drsActive: boolean;
 }
 
 function calcPitDurationSecs(pitLaneTimeSecs: number, pitCrewSpeed: number): number {
@@ -169,6 +176,9 @@ export function useRaceEngine(
                     pitEntryTyreAge: 0,
                     pitDurationSecs: 0,
                     isFinished: false,
+                    drsActive: false,
+                    prevProgress: d.progress,
+                    drsEligibleZones: new Array(circuit.drsZones.length).fill(false),
                 };
             })
             .sort((a, b) =>
@@ -188,10 +198,10 @@ export function useRaceEngine(
         const total = totalLengthRef.current!;
         const speedMap = speedMapRef.current!;
 
-        // game-seconds represented by each simulation tick for a nominal driver
-        let sumSpeedMap = 0;
-        for (let i = 0; i < speedMap.length; i++) sumSpeedMap += speedMap[i];
-        const tickToGameSecs = GAP_SCALE * BASE_STEP * (sumSpeedMap / speedMap.length);
+        // Harmonic mean ensures lapTime = GAP_SCALE/multiplier, matching the gap formula units
+        let sumInverse = 0;
+        for (let i = 0; i < speedMap.length; i++) sumInverse += 1 / speedMap[i];
+        const tickToGameSecs = GAP_SCALE * BASE_STEP * (speedMap.length / sumInverse);
 
         let tick = 0;
         intervalIdRef.current = setInterval(() => {
@@ -202,6 +212,9 @@ export function useRaceEngine(
             const thresholds   = thresholdsRef.current;
             const totalLapsVal = totalLapsRef.current;
             const prevPositions = new Map(engine.map(d => [d.id, d.position]));
+
+            // Snapshot progress before movement so detection crossings can be detected after ranking
+            for (const d of engine) d.prevProgress = d.progress;
 
             const pitEntryEvents: Array<{ driverId: string; lap: number; compound: TyreCompound }> = [];
             const pitExitEvents:  Array<{ driverId: string; lap: number; tyre: TyreCompound; tyreLapsIn: number; durationSecs: number }> = [];
@@ -231,7 +244,8 @@ export function useRaceEngine(
                 }
 
                 const idx = Math.floor(d.progress * SPEED_SAMPLES) % SPEED_SAMPLES;
-                const effectiveMultiplier = d.speedMultiplier + calcTyreSpeedDelta(d.tyre, d.tyreWear);
+                const drsBoost = d.drsActive ? DRS_SPEED_BOOST : 0;
+                const effectiveMultiplier = d.speedMultiplier + calcTyreSpeedDelta(d.tyre, d.tyreWear) + drsBoost;
                 const step = BASE_STEP * speedMap[idx] * Math.max(0.5, effectiveMultiplier);
                 const newProgress = ((d.progress - step) + 1) % 1;
 
@@ -240,9 +254,12 @@ export function useRaceEngine(
                     d.lapsCompleted += 1;
                     d.tyreAge       += 1;
                     d.tyreWear = Math.min(100, d.tyreWear + d.tyreDegradationRate);
-                    const lapTime = (tick - d.lapStartTick) * tickToGameSecs;
-                    d.lastLapTime = lapTime;
-                    if (lapTime < d.bestLapTime) d.bestLapTime = lapTime;
+                    // lapStartTick=0 means first partial lap — skip to avoid incorrect bestLapTime
+                    if (d.lapStartTick > 0) {
+                        const lapTime = (tick - d.lapStartTick) * tickToGameSecs;
+                        d.lastLapTime = lapTime;
+                        if (lapTime < d.bestLapTime) d.bestLapTime = lapTime;
+                    }
                     d.lapStartTick = tick;
 
                     // Evaluate pit strategy on every lap completion
@@ -274,6 +291,43 @@ export function useRaceEngine(
             ranked.forEach((d, i) => { d.position = i + 1; });
 
             const leader = ranked[0];
+
+            // DRS: sticky eligibility set at detection point, cleared on zone exit
+            const drsZones = CIRCUITS[circuitIdRef.current].drsZones ?? [];
+            if (drsZones.length > 0 && leader.lapsCompleted >= DRS_MIN_LAP) {
+                for (let i = 0; i < ranked.length; i++) {
+                    const d = ranked[i];
+                    if (d.pitStopTicksRemaining > 0 || d.isFinished) { d.drsActive = false; continue; }
+
+                    for (let zi = 0; zi < drsZones.length; zi++) {
+                        const z = drsZones[zi];
+
+                        // One-shot eligibility check: driver crosses detection point downward
+                        if (d.prevProgress > z.detection && d.progress <= z.detection) {
+                            if (i === 0) {
+                                d.drsEligibleZones[zi] = false;
+                            } else {
+                                const ahead = ranked[i - 1];
+                                const interval = (ahead.lapsCompleted - d.lapsCompleted) * GAP_SCALE
+                                    + (d.progress - ahead.progress) * GAP_SCALE;
+                                d.drsEligibleZones[zi] = interval >= 0 && interval <= DRS_WINDOW;
+                            }
+                        }
+
+                        // Reset eligibility when the driver exits the zone
+                        const wasInZone = d.prevProgress <= z.entry && d.prevProgress >= z.exit;
+                        const nowInZone = d.progress   <= z.entry && d.progress   >= z.exit;
+                        if (wasInZone && !nowInZone) d.drsEligibleZones[zi] = false;
+                    }
+
+                    // DRS active only when inside a zone for which eligibility was granted
+                    d.drsActive = drsZones.some((z, zi) =>
+                        d.progress <= z.entry && d.progress >= z.exit && d.drsEligibleZones[zi]
+                    );
+                }
+            } else {
+                for (const d of engine) d.drsActive = false;
+            }
 
             // Mark drivers as finished when they cross the line for their last lap
             const justFinished: string[] = [];
@@ -352,6 +406,7 @@ export function useRaceEngine(
                         + (d.progress - leader.progress) * GAP_SCALE,
                     tyreWear: d.tyreWear,
                     tyreAge: d.tyreAge,
+                    drsActive: d.drsActive,
                     ...(d.bestLapTime < Infinity && {
                         lastLapTime: d.lastLapTime,
                         bestLapTime: d.bestLapTime,
@@ -390,6 +445,7 @@ export function useRaceEngine(
                     y,
                     isPitting,
                     isFinished,
+                    drsActive: d.drsActive,
                 };
             });
 

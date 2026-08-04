@@ -29,9 +29,11 @@ export const initialRaceDrivers: RaceDriverState[] = raceTimingMock.map(row => (
     progress: 0.83,
     tyre: row.tyre,
     tyreAge: 10,
-    tyreWear: 30,
+    tyreWear: row.tyreWear,
     fuel: row.fuel,
     ers: row.ers,
     pitStops: [],
     status: DriverStatus.RACING,
+    drsEligible: false,
+    drsActive: false,
 }));

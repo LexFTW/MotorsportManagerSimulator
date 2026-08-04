@@ -35,6 +35,10 @@ export const CIRCUITS: Record<string, Circuit> = {
         pitLaneTimeSecs: 20,
         overtakingDifficulty: TrackOvertakingDifficulty.Hard,
         startFinishProgress: 1.7,
+        drsZones: [
+            { detection: 0.06, entry: 0.88, exit: 0.70 }, // main straight (detection before S/F)
+            { detection: 0.32, entry: 0.23, exit: 0.13 }, // back straight → La Caixa (T9)
+        ],
         sectors: [
             { id: 1, name: 'Sector 1', distanceKm: 1.48 },
             { id: 2, name: 'Sector 2', distanceKm: 1.78 },
@@ -84,6 +88,10 @@ export const CIRCUITS: Record<string, Circuit> = {
         pitLaneTimeSecs: 21,
         overtakingDifficulty: TrackOvertakingDifficulty.Hard,
         startFinishProgress: 2.1,
+        drsZones: [
+            { detection: 0.84, entry: 0.78, exit: 0.62 }, // Kemmel straight
+            { detection: 0.48, entry: 0.42, exit: 0.30 }, // back straight before Bus Stop
+        ],
         sectors: [
             { id: 1, name: 'Sector 1', distanceKm: 1.48 },
             { id: 2, name: 'Sector 2', distanceKm: 1.78 },
@@ -134,6 +142,10 @@ export const CIRCUITS: Record<string, Circuit> = {
         pitLaneTimeSecs: 19,
         overtakingDifficulty: TrackOvertakingDifficulty.Medium,
         startFinishProgress: 1.5,
+        drsZones: [
+            { detection: 0.05, entry: 0.97, exit: 0.84 }, // main straight (detection before S/F)
+            { detection: 0.59, entry: 0.53, exit: 0.42 }, // back straight (Via des Serres)
+        ],
         sectors: [
             { id: 1, name: 'Sector 1', distanceKm: 1.48 },
             { id: 2, name: 'Sector 2', distanceKm: 1.78 },
@@ -183,6 +195,10 @@ export const CIRCUITS: Record<string, Circuit> = {
         pitLaneTimeSecs: 22,
         overtakingDifficulty: TrackOvertakingDifficulty.Medium,
         startFinishProgress: 1.5,
+        drsZones: [
+            { detection: 0.05, entry: 0.96, exit: 0.83 }, // main straight (detection before S/F)
+            { detection: 0.61, entry: 0.55, exit: 0.43 }, // back section (T11-T13)
+        ],
         sectors: [
             { id: 1, name: 'Sector 1', distanceKm: 1.48 },
             { id: 2, name: 'Sector 2', distanceKm: 1.78 },

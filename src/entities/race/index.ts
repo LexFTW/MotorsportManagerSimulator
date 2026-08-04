@@ -61,6 +61,8 @@ export interface RaceDriverState {
     ers: number; // percentage remaining
     pitStops: PitStop[];
     status: DriverStatus;
+    drsEligible: boolean;
+    drsActive: boolean;
 }
 
 export interface PitStop {

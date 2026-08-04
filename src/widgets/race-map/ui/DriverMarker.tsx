@@ -12,14 +12,16 @@ interface Props {
     y: number;
     isPitting: boolean;
     isFinished: boolean;
+    drsActive: boolean;
 }
 
-export const DriverMarker = ({ driver, x, y, isPitting, isFinished }: Props) => {
+export const DriverMarker = ({ driver, x, y, isPitting, isFinished, drsActive }: Props) => {
     const isOffTrack = isPitting || isFinished;
     const label = isFinished ? 'F' : isPitting ? 'P' : String(driver.position);
     const fill  = isOffTrack ? (isFinished ? '#444' : '#888') : driver.color;
     return (
         <g transform={`translate(${x}, ${y})`} className={isPitting && !isFinished ? styles.pitting : undefined}>
+            {drsActive && <circle r={5.2} fill="none" stroke="#00d4ff" strokeWidth={1} className={styles.drsRing} />}
             <circle r={3.2} fill={fill} className={styles.marker} />
             <text x={0} y={0} className={styles.markerPosition} textAnchor="middle" dominantBaseline="central">
                 {label}

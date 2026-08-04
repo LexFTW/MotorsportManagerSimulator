@@ -19,8 +19,8 @@ export const TYRE_DEGRADATION_PER_LAP: Record<string, number> = {
     Wet:    2.0,
 };
 
-// 100% worn tyre = -0.020 speed loss (~2% slower); 50% worn = -0.010
-const BASE_WEAR_PENALTY = 0.0002;
+// 100% worn tyre = -0.040 speed loss (~3.2s/lap); 50% worn = -0.020 (~1.6s/lap)
+const BASE_WEAR_PENALTY = 0.0004;
 
 /**
  * Compound bonus scales from full value at 0% wear to 0 at 100% wear.

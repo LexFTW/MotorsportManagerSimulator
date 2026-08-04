@@ -8,12 +8,14 @@ export interface RaceTimingRow {
     tyre: "Soft" | "Medium" | "Hard";
     laps: number;
     interval: string;
+    intervalToAhead: string;
     lastLap: string;
     bestLap: string;
     ers: number;
     fuel: number;
     pitStops: number;
     tyreWear: number;
+    drsActive: boolean;
 }
 
 export interface TeamTiming {

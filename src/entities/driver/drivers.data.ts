@@ -27,25 +27,25 @@ export const DRIVERS: Driver[] = [
         id: 'VER',
         team: 'red-bull',
         identity: { firstName: 'Max', lastName: 'Verstappen', code: 'VER', dorsal: 1, photo: maxVerstappenPhoto, country: 'NL' },
-        skills: { pace: 96, consistency: 93, tyreManagement: 90, aggressiveness: 94, wetSkills: 95, starts: 95, experience: 88 },
+        skills: { pace: 95, consistency: 93, tyreManagement: 90, aggressiveness: 94, wetSkills: 95, starts: 95, experience: 88 },
     },
     {
         id: 'HAM',
         team: 'ferrari',
         identity: { firstName: 'Lewis', lastName: 'Hamilton', code: 'HAM', dorsal: 44, photo: hamiltonPhoto, country: 'GB' },
-        skills: { pace: 90, consistency: 94, tyreManagement: 90, aggressiveness: 88, wetSkills: 96, starts: 91, experience: 98 },
+        skills: { pace: 90, consistency: 94, tyreManagement: 90, aggressiveness: 88, wetSkills: 96, starts: 92, experience: 98 },
     },
         {
         id: 'ALO',
         team: 'aston-martin',
         identity: { firstName: 'Fernando', lastName: 'Alonso', code: 'ALO', dorsal: 14, photo: fernandoAlonsoPhoto, country: 'ES' },
-        skills: { pace: 93, consistency: 92, tyreManagement: 90, aggressiveness: 90, wetSkills: 92, starts: 88, experience: 99 },
+        skills: { pace: 93, consistency: 92, tyreManagement: 91, aggressiveness: 90, wetSkills: 92, starts: 90, experience: 99 },
     },
     {
         id: 'LEC',
         team: 'ferrari',
         identity: { firstName: 'Charles', lastName: 'Leclerc', code: 'LEC', dorsal: 16, photo: charlesLeclercPhoto, country: 'MC' },
-        skills: { pace: 88, consistency: 88, tyreManagement: 85, aggressiveness: 88, wetSkills: 90, starts: 90, experience: 83 },
+        skills: { pace: 90, consistency: 88, tyreManagement: 86, aggressiveness: 88, wetSkills: 90, starts: 90, experience: 83 },
     },
     {
         id: 'NOR',
@@ -57,7 +57,7 @@ export const DRIVERS: Driver[] = [
         id: 'RUS',
         team: 'mercedes',
         identity: { firstName: 'George', lastName: 'Russell', code: 'RUS', dorsal: 63, photo: georgeRussellPhoto, country: 'GB' },
-        skills: { pace: 91, consistency: 84, tyreManagement: 87, aggressiveness: 86, wetSkills: 95, starts: 88, experience: 83 },
+        skills: { pace: 91, consistency: 87, tyreManagement: 87, aggressiveness: 86, wetSkills: 95, starts: 88, experience: 83 },
     },
     {
         id: 'SAI',

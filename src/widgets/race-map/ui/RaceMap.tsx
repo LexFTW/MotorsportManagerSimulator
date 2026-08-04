@@ -84,7 +84,7 @@ export const RaceMap = () => {
             <svg className={styles.trackOverlay} style={positionStyle} viewBox={circuit.trackPath.viewBox}>
                 <path ref={pathRef} d={circuit.trackPath.d} visibility="hidden" />
                 {pathReady && screenPositions.map(d => (
-                    <DriverMarker key={d.id} driver={d} x={d.x} y={d.y} isPitting={d.isPitting} isFinished={d.isFinished} />
+                    <DriverMarker key={d.id} driver={d} x={d.x} y={d.y} isPitting={d.isPitting} isFinished={d.isFinished} drsActive={d.drsActive} />
                 ))}
             </svg>
         </>

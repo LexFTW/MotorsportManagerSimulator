@@ -18,6 +18,7 @@ export interface Circuit {
     overtakingDifficulty: TrackOvertakingDifficulty;
     sectors: TrackSector[];
     startFinishProgress: number;
+    drsZones: DrsZone[];
     styles: CircuitStyles;
 }
 
@@ -51,6 +52,13 @@ export interface TrackSector {
     id: number;
     name: string;
     distanceKm: number;
+}
+
+/** A DRS zone defined by progress values (progress decreases 1→0 per lap). */
+export interface DrsZone {
+    detection: number; // progress where gap is measured (one-shot, resets on zone exit)
+    entry: number;     // progress where the zone begins (driver crosses from above)
+    exit: number;      // progress where the zone ends
 }
 
 export interface CircuitDeviceStyles {
