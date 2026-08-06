@@ -35,6 +35,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 76,
     pitStops: 1,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
   {
     position: 2,
@@ -56,6 +58,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 75,
     pitStops: 1,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 3. Red Bull Racing (ya existente) ====
@@ -79,6 +83,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 71,
     pitStops: 1,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 4. Ferrari (ya existente) ====
@@ -102,6 +108,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 73,
     pitStops: 1,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 5. Mercedes (ya existente) ====
@@ -125,6 +133,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 70,
     pitStops: 2,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 6. Mercedes #2 (Kimi Antonelli) ====
@@ -148,6 +158,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 67,
     pitStops: 2,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 7. Ferrari #2 (Lewis Hamilton) ====
@@ -171,6 +183,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 69,
     pitStops: 1,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 8. Red Bull #2 (Sergio PÃ©rez) ====
@@ -194,6 +208,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 68,
     pitStops: 1,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 9. Aston Martin (Fernando Alonso) ====
@@ -217,6 +233,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 66,
     pitStops: 1,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 10. Aston Martin #2 (Lance Stroll) ====
@@ -240,6 +258,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 64,
     pitStops: 2,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 11. Alpine (Pierre Gasly) ====
@@ -263,6 +283,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 62,
     pitStops: 2,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 12. Alpine #2 (Jack Doohan) ====
@@ -286,6 +308,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 60,
     pitStops: 2,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 13. Williams (Alexander Albon) ====
@@ -309,6 +333,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 58,
     pitStops: 1,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 14. Williams #2 (Franco Colapinto) ====
@@ -332,6 +358,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 55,
     pitStops: 2,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 15. RB (Yuki Tsunoda) ====
@@ -355,6 +383,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 52,
     pitStops: 2,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 16. RB #2 (Liam Lawson) ====
@@ -378,6 +408,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 50,
     pitStops: 2,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 17. Audi (Nico HÃ¼lkenberg) ====
@@ -401,6 +433,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 47,
     pitStops: 1,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 18. Audi #2 (Gabriel Bortoleto) ====
@@ -424,6 +458,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 44,
     pitStops: 2,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 19. Haas (Esteban Ocon) ====
@@ -447,6 +483,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 41,
     pitStops: 2,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 
   // ==== 20. Haas #2 (Oliver Bearman) ====
@@ -470,6 +508,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 38,
     pitStops: 2,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
   // ==== 21. Cadillac #1 (Valtteri Bottas) ====
   {
@@ -492,6 +532,8 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 36,
     pitStops: 2,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
   // ==== 22. Cadillac #2 (Sergio PÃ©rez) ====
   {
@@ -514,5 +556,7 @@ export const raceTimingMock: RaceTimingRow[] = [
     fuel: 34,
     pitStops: 2,
     tyreWear: 30,
+    drsActive: false,
+    intervalToAhead: "+1.744",
   },
 ];
